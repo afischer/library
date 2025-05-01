@@ -1,7 +1,7 @@
-import { getFile, getAllFilesInDrive, getNodeFromSlug } from '$lib/server/drive';
+import { getFile, getNodeFromSlug } from '$lib/server/drive';
 import { json } from '@sveltejs/kit';
 
-export async function GET({ params, locals }: { params: { slugPath: string } }) {
+export async function GET({ params }: { params: { slugPath: string } }) {
 	const node = await getNodeFromSlug(params.slugPath);
 	if (!node?.file.id) {
 		return {

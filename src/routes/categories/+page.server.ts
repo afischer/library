@@ -1,13 +1,11 @@
-import { getFile, getAllFilesInDrive, getFileTree } from '$lib/server/drive';
+import type { PageServerLoad } from './$types';
 
 export const ssr = true;
 export const csr = false;
 export const prerender = true;
 
-export async function load({ params, locals }: { params: { fileId: string } }) {
-	const tree = await getFileTree();
-
+export const load: PageServerLoad = async ({ locals }) => {
 	return {
-		tree: tree
+		tree: locals.tree
 	};
-}
+};

@@ -30,10 +30,12 @@ export interface FilenameMetadata {
 	slug: string;
 }
 
-export interface FileTreeNode extends FilenameMetadata {
+export type FileTreeNode = FilenameMetadata & {
 	file: drive_v3.Schema$File;
-	children: FileTreeNode[];
-}
+	children: FileTree;
+};
+
+export type FileTree = Record<FilenameMetadata['slug'], FileTreeNode>;
 
 export enum BuildingBlockBoundary {
 	CODE = '\ue907'

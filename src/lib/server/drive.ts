@@ -3,7 +3,7 @@ import type { GaxiosPromise, GaxiosResponse } from 'gaxios';
 import { google } from 'googleapis';
 import type { docs_v1, drive_v3 } from 'googleapis';
 import type { JWT } from 'google-auth-library';
-import type { FileTreeNode } from '$lib/types';
+import type { FileTree, FileTreeNode } from '$lib/types';
 import { getOrdering } from './metadata';
 import { getTags } from './metadata';
 import slugify from 'slugify';
@@ -59,7 +59,7 @@ async function listAllFiles(): Promise<drive_v3.Schema$File[]> {
 		console.log(`Fetched ${allFiles.length} files...`);
 		nextPageToken = res.data.nextPageToken;
 		// TEMPORARY
-		// nextPageToken = undefined;
+		nextPageToken = undefined;
 	}
 
 	return allFiles;
@@ -82,7 +82,8 @@ export const getAllFiles = async () => {
 	return allFiles;
 };
 
-export async function getFileTree(folderId?: string): Promise<FileTreeNode[]> {
+// Returns the root filetree node
+export async function getFileTree(folderId?: string): Promise<FileTreeNode> {
 	const allFiles = (await getAllFiles()).filter((file) => !file.name?.startsWith('.DS_Store'));
 
 	// If no folderId provided, get root level files
@@ -92,9 +93,6 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode[]> {
 				(file) =>
 					file.parents?.length === 0 || file?.parents?.[0] === import.meta.env.VITE_GOOGLE_DRIVE_ID
 			);
-
-	// sort root files by name
-	rootFiles.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0);
 
 	// Create a map of parent ID to children
 	const childrenMap = allFiles.reduce((acc: Record<string, drive_v3.Schema$File[]>, file) => {
@@ -109,7 +107,6 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode[]> {
 	}, {});
 
 	// Recursive function to build the tree
-	// TODO: rework to key off of slug
 	const buildTree = (file: drive_v3.Schema$File): FileTreeNode => {
 		if (!file.name) throw new Error(`File ${file.id} has no name.`);
 		const cleanName = getCleanName(file.name);
@@ -120,42 +117,52 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode[]> {
 			tags: getTags(file.name),
 			ordering: getOrdering(file.name),
 			slug: slugify(cleanName, { lower: true, strict: true }),
-			children: []
+			children: {}
 		};
 
 		// If this file has children, recursively build their trees
 		if (file.id && childrenMap[file.id]) {
-			node.children = childrenMap[file.id].map((child) => buildTree(child));
+			node.children = childrenMap[file.id].reduce((acc: FileTree, child) => {
+				const childNode = buildTree(child);
+				acc[childNode.slug] = childNode;
+				return acc;
+			}, {});
 		}
-
-		// sort children by ordering if exists, otherwise by name
-		node.children.sort((a, b) => {
-			if (a.ordering && b.ordering) {
-				return a.ordering - b.ordering;
-			}
-			return a.file.name?.localeCompare(b.file.name ?? '') ?? 0;
-		});
 
 		return node;
 	};
 
 	// Build the tree starting from root files
-	return rootFiles.map((file) => buildTree(file));
+	return {
+		file: {
+			id: '',
+			name: '',
+			mimeType: 'application/vnd.google-apps.folder'
+		} as drive_v3.Schema$File,
+		cleanName: '',
+		tags: [],
+		ordering: null,
+		slug: '',
+		children: rootFiles.reduce((acc: FileTree, file) => {
+			const node = buildTree(file);
+			acc[node.slug] = node;
+			return acc;
+		}, {})
+	};
 }
 
-// TODO: rework the tree to key off of slug to avoid all the .finds
 export async function getNodeFromSlug(slug: string): Promise<FileTreeNode | undefined> {
 	const tree = await getFileTree();
 
 	// split the path into parts
 	const parts = slug.split('/');
 
-	// move throught the tree, looking for the node that matches the slug
-	let currentNode = tree.find((node) => node.slug === parts[0]);
+	// move through the tree, looking for the node that matches the slug
+	let currentNode = tree.children[parts[0]];
 	parts.shift(); // remove the first part
 	console.log('at', currentNode?.cleanName);
 	for (const part of parts) {
-		currentNode = currentNode?.children.find((child) => child.slug === part);
+		currentNode = currentNode?.children[part];
 		console.log('> at', currentNode?.cleanName, 'for', part);
 	}
 	return currentNode;
