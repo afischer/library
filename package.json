@@ -38,6 +38,7 @@
 		"vitest": "^3.0.0"
 	},
 	"dependencies": {
-		"googleapis": "^148.0.0"
+		"googleapis": "^148.0.0",
+		"slugify": "^1.6.6"
 	}
 }

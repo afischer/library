@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Category from '$lib/components/Category.svelte';
-import type { FileNode } from '$lib/server/drive';
+	import type { FileTreeNode } from '$lib/types';
 
-	export let node: FileNode;
+	export let node: FileTreeNode;
   export let depth: number = 0;
+  export let parentPath: string = ""
 </script>
 
 
@@ -11,14 +12,18 @@ import type { FileNode } from '$lib/server/drive';
 {#if node.children.length > 0}
   <details open={depth === 0}>
     <summary>
-      <p><a href="/{node.file.id}">{node.file.name}</a></p>
+      {#if node.file.mimeType === 'application/vnd.google-apps.folder'}
+        <p>{node.cleanName}</p>
+      {:else}
+        <p><a href="{parentPath}/{node.slug}">{node.cleanName}</a></p>
+      {/if}
     </summary>
     {#each node.children as child}
-    <Category node={child} depth={depth + 1} />
+    <Category node={child} depth={depth + 1} parentPath={parentPath + "/" + node.slug} />
     {/each}
   </details>
 {:else}
-<p><a href="/{node.file.id}">{node.file.name}</a></p>
+<p><a href="{parentPath}/{node.slug}">{node.cleanName}</a></p>
 {/if}
 
 

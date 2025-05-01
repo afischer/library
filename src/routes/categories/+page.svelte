@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FileNode } from '$lib/server/drive';
+	import type { FileTreeNode } from '$lib/types';
 
 	import Category from '$lib/components/Category.svelte';
 	// export const prerender = true;
@@ -7,7 +7,7 @@
 	// export const csr = false;
 
 	export let data: {
-		tree: FileNode[];
+		tree: FileTreeNode[];
 	};
 	// console.log(data);
 	export const hydrate = false;
