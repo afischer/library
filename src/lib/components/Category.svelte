@@ -11,7 +11,11 @@
 	<details open={depth === 0}>
 		<summary>
 			{#if node.file.mimeType === 'application/vnd.google-apps.folder'}
-				<p>{node.cleanName}</p>
+				{#if node.home}
+					<p><a href="{parentPath}/{node.home.slug}">{node.cleanName}</a></p>
+				{:else}
+					<p>{node.cleanName}</p>
+				{/if}
 			{:else}
 				<p><a href="{parentPath}/{node.slug}">{node.cleanName}</a></p>
 			{/if}
@@ -34,7 +38,7 @@
 	p {
 		border-left: 1px solid #ccc;
 		margin: 0;
-		padding-left: 1.9rem;
+		padding-left: 2.05rem;
 	}
 
 	details summary p {

@@ -17,11 +17,13 @@
 		{@const list = document?.lists?.[structuralElement.paragraph?.bullet?.listId ?? '']}
 		{@const nestStyle =
 			list?.listProperties?.nestingLevels?.[structuralElement.paragraph?.bullet?.nestingLevel ?? 0]}
-		{@html nestStyle?.glyphSymbol ? `<ul style="list-style-type: '${nestStyle.glyphSymbol} ';"">` : `<ul>`}
+		{@html nestStyle?.glyphSymbol
+			? `<ul style="list-style-type: '${nestStyle.glyphSymbol} ';"">`
+			: `<ul>`}
 	{/if}
 	<StructuralElement
 		{structuralElement}
-		inlineObjects={document.inlineObjects}
-		listProperties={document.lists}
+		inlineObjects={document.inlineObjects ?? {}}
+		listProperties={document.lists ?? {}}
 	/>
 {/each}

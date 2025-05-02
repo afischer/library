@@ -32,6 +32,10 @@ export interface FilenameMetadata {
 
 export type FileTreeNode = FilenameMetadata & {
 	file: drive_v3.Schema$File;
+	/**
+	 * If there is a child tagged as home, it will be displayed on the home page.
+	 */
+	home?: Exclude<FileTreeNode, 'home' | 'children'>;
 	children: FileTree;
 };
 

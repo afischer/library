@@ -6,8 +6,10 @@
 	export let data: { tree: FileTreeNode };
 </script>
 
-<article>
+<h1>Categories</h1>
+
+<section>
 	{#each Object.values(data.tree.children) as node}
 		<Category {node} />
 	{/each}
-</article>
+</section>

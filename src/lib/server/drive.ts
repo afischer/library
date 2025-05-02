@@ -35,9 +35,20 @@ export async function getFile(fileId: string): GaxiosPromise<docs_v1.Schema$Docu
 	return docs.documents.get({ documentId: fileId, auth: authClient });
 }
 
+export async function getFirstRevision(fileId: string): GaxiosPromise<drive_v3.Schema$Revision> {
+	const authClient = await getAuthClient();
+	const drive = google.drive({ version: 'v3' });
+	return drive.revisions.get({
+		fileId,
+		fields: 'modifiedTime,lastModifyingUser',
+		revisionId: '1',
+		auth: authClient
+	});
+}
+
 async function listAllFiles(): Promise<drive_v3.Schema$File[]> {
 	const fields =
-		'nextPageToken,files(id,name,mimeType,parents,webViewLink,createdTime,modifiedTime,lastModifyingUser, owners)';
+		'nextPageToken,files(id,name,mimeType,parents,webViewLink,createdTime,modifiedTime,lastModifyingUser)';
 	const authClient = await getAuthClient();
 	const drive = google.drive({ version: 'v3' });
 
@@ -59,7 +70,7 @@ async function listAllFiles(): Promise<drive_v3.Schema$File[]> {
 		console.log(`Fetched ${allFiles.length} files...`);
 		nextPageToken = res.data.nextPageToken;
 		// TEMPORARY
-		nextPageToken = undefined;
+		// nextPageToken = undefined;
 	}
 
 	return allFiles;
@@ -125,6 +136,10 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode> {
 			node.children = childrenMap[file.id].reduce((acc: FileTree, child) => {
 				const childNode = buildTree(child);
 				acc[childNode.slug] = childNode;
+
+				// attach home page if one exists.
+				if (childNode.tags.includes('home')) node.home = childNode;
+
 				return acc;
 			}, {});
 		}

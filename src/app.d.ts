@@ -6,7 +6,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			tree: FileTreeNode;
+			tree?: FileTreeNode;
 		}
 		// interface PageData {}
 		// interface PageState {}

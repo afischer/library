@@ -56,8 +56,6 @@
 	</h6>
 {:else if paragraph.bullet && listProperties}
 	<!-- this is a nightmare fix this -->
-	{@const list = listProperties[paragraph.bullet?.listId ?? '']}
-	{@const nestStyle = list.listProperties.nestingLevels[paragraph.bullet.nestingLevel ?? 0]}
 	<!-- <code>{JSON.stringify(nestStyle)}</code> ----- -->
 	<!-- <code>{JSON.stringify(paragraph.bullet)}</code> -->
 	<li>
@@ -73,6 +71,7 @@
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
 			{:else if element.inlineObjectElement && element.inlineObjectElement.inlineObjectId}
+				<!-- TODO: this is broken when there are images in tables. -->
 				<InlineObject inlineObject={inlineObjects[element.inlineObjectElement.inlineObjectId]} />
 			{:else}
 				unknown {element}
