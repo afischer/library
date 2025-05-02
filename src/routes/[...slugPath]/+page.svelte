@@ -4,7 +4,7 @@
 	import Document from '$lib/components/Document/index.svelte';
 	import Category from '$lib/components/Category.svelte';
 	import type { FileTreeNode } from '$lib/types';
-
+	import Avatar from '$lib/components/Avatar.svelte';
 	export let data: {
 		doc: docs_v1.Schema$Document;
 		revision: drive_v3.Schema$Revision;
@@ -17,18 +17,22 @@
 {#if data.revision}
 	{JSON.stringify(data.revision)}
 	<h1>{data.tree.cleanName}</h1>
-	<img
-		src={data.revision.lastModifyingUser?.photoLink}
-		alt="{data.revision.lastModifyingUser?.displayName} photo"
-	/>
 	<p>
+		{#if data.revision.lastModifyingUser}
+			<Avatar user={data.revision.lastModifyingUser} />
+		{/if}
 		Created {data.revision.lastModifyingUser?.displayName &&
 			'by ' + data.revision.lastModifyingUser?.displayName}
 		at {data.revision.modifiedTime}.
 	</p>
 	<p>
-		Last modified by {data.tree.file.lastModifyingUser?.displayName} at
-		{data.tree.file.modifiedTime}.
+		{#if data.tree.file.lastModifyingUser}
+			<Avatar user={data.tree.file.lastModifyingUser} />
+			Last modified by {data.tree.file.lastModifyingUser?.displayName} at
+			{data.tree.file.modifiedTime}.
+		{:else}
+			Last modified at {data.tree.file.modifiedTime}.
+		{/if}
 	</p>
 {/if}
 

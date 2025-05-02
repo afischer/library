@@ -44,3 +44,9 @@ export type FileTree = Record<FilenameMetadata['slug'], FileTreeNode>;
 export enum BuildingBlockBoundary {
 	CODE = '\ue907'
 }
+
+export interface Breadcrumb {
+	cleanName: FilenameMetadata['cleanName'];
+	slug: FilenameMetadata['slug'];
+	path: string;
+}

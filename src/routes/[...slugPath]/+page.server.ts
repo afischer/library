@@ -7,7 +7,6 @@ export const prerender = true;
 
 // todo: routematcher for 404
 export const load: ServerLoad = async ({ locals }) => {
-	console.log('>>>>', locals);
 	if (!locals.tree?.file.id) {
 		return {
 			error: 'File not found',

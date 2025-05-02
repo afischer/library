@@ -3,7 +3,7 @@ import type { GaxiosPromise, GaxiosResponse } from 'gaxios';
 import { google } from 'googleapis';
 import type { docs_v1, drive_v3 } from 'googleapis';
 import type { JWT } from 'google-auth-library';
-import type { FileTree, FileTreeNode } from '$lib/types';
+import type { Breadcrumb, FileTree, FileTreeNode } from '$lib/types';
 import { getOrdering } from './metadata';
 import { getTags } from './metadata';
 import slugify from 'slugify';
@@ -181,4 +181,24 @@ export async function getNodeFromSlug(slug: string): Promise<FileTreeNode | unde
 		console.log('> at', currentNode?.cleanName, 'for', part);
 	}
 	return currentNode;
+}
+
+export async function getBreadcrumbs(slug: string): Promise<Breadcrumb[]> {
+	const parts = slug.split('/');
+	const breadcrumbs: Breadcrumb[] = [];
+	let currentPath = '';
+	for (const part of parts) {
+		currentPath += `${part}`;
+		console.log('currentPath', currentPath);
+		const node = await getNodeFromSlug(currentPath);
+		if (node) {
+			breadcrumbs.push({
+				cleanName: node.cleanName,
+				slug: node.slug,
+				path: `/${currentPath}`
+			});
+		}
+		currentPath += '/';
+	}
+	return breadcrumbs;
 }
