@@ -1,22 +1,33 @@
-<!-- <script lang="ts">
-	import { onMount } from 'svelte';
-	import { search } from '$lib/server/search';
+<script lang="ts">
+	import type { FileTree } from '$lib/types';
 
 	export let data: {
-		results: drive_v3.Schema$File[];
+		tree: FileTree;
 	};
+
+	const featured = Object.values(data.tree.children).find((node) => node.tags.includes('featured'));
+	const teams = Object.values(data.tree.children).filter((node) => node.tags.includes('team'));
+
+	console.log(featured, teams);
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<h1 class="brand">Library</h1>
 
-{#each data.results as result}
-	<p>{result.name}</p>
-{/each} -->
-
-<h1>NYT Library</h1>
+<a href="/categories">view all files</a>
 
 <form method="GET" action="/search">
 	<input type="text" name="q" />
 	<button type="submit">Search</button>
 </form>
+
+<h2>Teams</h2>
+{#each teams as team}
+	<p><a href={`/${team.slug}`}>{team.cleanName}</a></p>
+{/each}
+
+<h2>Featured Articles</h2>
+{#each featured as article}
+	<p>{article.cleanName}</p>
+{/each}
+
+<h1>NYT Library</h1>

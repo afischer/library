@@ -6,7 +6,7 @@ import type { drive_v3 } from 'googleapis';
  * - hidden: do not display this file in the UI
  * - team: display on home page as a team page to jump to immediately
  */
-export type Tag = 'home' | 'hidden' | 'team';
+export type Tag = 'home' | 'hidden' | 'team' | 'featured';
 
 /**
  * Information derived from the google drive file name
