@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { FileTree } from '$lib/types';
 
 	export let data: {
@@ -12,13 +13,11 @@
 </script>
 
 <h1 class="brand">Library</h1>
+<p>A collection of tools and tips for creating great journalism. Get started.</p>
 
 <a href="/categories">view all files</a>
 
-<form method="GET" action="/search">
-	<input type="text" name="q" />
-	<button type="submit">Search</button>
-</form>
+<SearchBar />
 
 <h2>Teams</h2>
 {#each teams as team}

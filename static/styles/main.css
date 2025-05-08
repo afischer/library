@@ -1,60 +1,126 @@
-@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import './reset.css';
 
 /* add color variables for light and dark mode */
 :root {
-  --background-color: #f0f0f0;
-  --text-color: #000;
-
+  /* --background-color: #f0f0f0; */
+  /* --text-color: #000; */
+  
+  --color-primary: #E16D6D;
+  --color-primary-light: #FCF6F6;
+  --color-secondary: #404040;
+  --color-secondary-contrast: #ccc;
+  --color-dark: #222;
 
   --font-sans: 'Libre Franklin', sans-serif;
-  --font-serif: 'Libre Baskerville', serif;
+  --font-serif: 'PT Serif', serif;
   --font-brand: 'Alfa Slab One', sans-serif;
   --font-weight-bold: 700;
   --font-weight-normal: 400;
+  --font-weight-light: 100;
+}
 
+/* Night mode colors */
+@media (prefers-color-scheme: dark) {
+  /* :root {
+    --background-color: #000;
+    --text-color: #fff;
+  } */
 }
 
 
 
 body {
   font-family: var(--font-sans);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-light);
 
+  font-size: 1.125rem;
+    line-height: 1.5;
   background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;
   padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+a, a:hover {
+  color: var(--color-primary);
+}
+
+h1 {
   font-family: var(--font-serif);
+  font-weight: var(--font-weight-normal);
+  font-size: 42px;
 }
 
-
-
-main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 1rem;
+h2,
+h3,
+h4,
+h5,
+h6 {
+font-family: var(--font-sans);
+font-weight: var(--font-weight-normal);
 }
 
-nav {
-  background-color: #000;
-  color: #fff;
-  padding: 1rem;
+h2 {
+  font-size: 26px;
 }
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-}
-
 
 .brand {
+  letter-spacing: 0.005em;
   font-family: var(--font-brand);
   font-weight: var(--font-weight-normal);
-  font-size: 2rem;
   margin: 0;
 }
 
+nav, nav h1 {
+  margin: 0;
+}
 
+input {
+  transition: background-color 0.2s ease-in-out;
+}
+
+input:hover {
+  background-color: var(--color-primary-light);
+}
+
+input[type="text"] {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-normal);
+  font-size: 16px;
+  border: 1px solid var(--color-secondary);
+  box-shadow: 5px 5px 0px 0px var(--color-secondary);
+  height: 50px;
+  width: calc(100% - 5px);
+  padding-left: 15px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+}
+
+/* button immediately following an input[type="text"] */
+input[type="text"] + button {
+  /* height: 50px;
+    width: 50px;
+    font-size: 15pt;
+    margin-left: -50px;
+    opacity: 0.95; */
+
+        position: relative;
+          z-index: 10;
+          border: none;
+          background: #E16D6D;
+          height: 48px;
+          width: 50px;
+          top: 0.5px;
+          color: #fff;
+          opacity: 1;
+          font-size: 12pt;
+          cursor: pointer;
+          margin-left: -55px;
+}
+
+input[type="text"]::placeholder {
+  color: #aaa;
+}
