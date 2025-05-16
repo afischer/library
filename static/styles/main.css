@@ -29,7 +29,6 @@
 }
 
 
-
 body {
   font-family: var(--font-sans);
   font-weight: var(--font-weight-light);
@@ -113,7 +112,7 @@ input[type="text"] + button {
           background: #E16D6D;
           height: 48px;
           width: 50px;
-          top: 0.5px;
+          top: 1px;
           color: #fff;
           opacity: 1;
           font-size: 12pt;

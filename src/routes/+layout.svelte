@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import type { Breadcrumb } from '$lib/types';
-	import BookIcon from '$lib/components/icons/BookIcon.svelte';
+	import LogoLockup from '$lib/components/LogoLockup.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	export let data: {
 		breadcrumbs: Breadcrumb[];
@@ -13,28 +14,7 @@
 </script>
 
 <header>
-	<nav aria-label="Main navigation">
-		<div class="nav-content">
-			<h1>
-				<a class="brand" href="/" aria-label="Home">
-					<BookIcon size="24" aria-hidden="true" />
-					<span class="brand-text">Library</span>
-				</a>
-			</h1>
-
-			{#if data.breadcrumbs.length}
-				<nav class="breadcrumbs" aria-label="Breadcrumb">
-					<ol>
-						{#each data.breadcrumbs as breadcrumb, i}
-							<li>
-								<a href={breadcrumb.path}>{breadcrumb.cleanName}</a>
-							</li>
-						{/each}
-					</ol>
-				</nav>
-			{/if}
-		</div>
-	</nav>
+	<Breadcrumbs breadcrumbs={data.breadcrumbs} />
 </header>
 
 <main class:bg-dark={isHome}>
@@ -43,67 +23,19 @@
 
 <style>
 	header {
+		height: 50px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		width: 100%;
 		background-color: var(--color-secondary);
 		color: var(--color-secondary-contrast);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-
-	nav {
-		height: 50px;
-	}
-
-	.nav-content {
+		padding-left: 1rem;
 		display: flex;
 		align-items: center;
-	}
-
-	nav a {
-		margin-left: 0.5rem;
-		text-decoration: none;
-		font-size: 15px;
-		color: var(--color-secondary-contrast);
-	}
-
-	nav h1 {
-		margin: 0;
-		display: inline-block;
-	}
-
-	nav h1 a {
-		font-size: 18px;
-		display: flex;
-		align-items: center;
-	}
-
-	.brand-text {
-		padding-left: 0.5rem;
-		border-left: 1px solid rgba(255, 255, 255, 0.35);
-	}
-
-	.breadcrumbs {
-		flex: 1;
-		display: flex;
-		align-items: center;
-	}
-
-	.breadcrumbs ol {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-	}
-
-	.breadcrumbs li {
-		display: flex;
-		align-items: center;
-	}
-
-	.breadcrumbs li::before {
-		content: '→';
-		margin-left: 0.5rem;
-		color: rgba(255, 255, 255, 0.5);
+		justify-content: center;
 	}
 
 	.bg-dark {

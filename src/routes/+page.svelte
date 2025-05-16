@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LogoLockup from '$lib/components/LogoLockup.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { FileTree } from '$lib/types';
 
@@ -12,21 +13,49 @@
 	console.log(featured, teams);
 </script>
 
-<h1 class="brand">Library</h1>
-<p>A collection of tools and tips for creating great journalism. Get started.</p>
+<div class="hero">
+	<LogoLockup size={38} />
+	<p class="tagline">
+		A collection of tools and tips for creating great journalism. <a href="/faq">Get started</a>.
+	</p>
 
-<a href="/categories">view all files</a>
+	<a href="/categories">view all files</a>
+</div>
 
-<SearchBar />
+<div class="search-bar">
+	<SearchBar />
+</div>
 
-<h2>Teams</h2>
-{#each teams as team}
-	<p><a href={`/${team.slug}`}>{team.cleanName}</a></p>
-{/each}
+<div class="teams">
+	<h2>Teams</h2>
+	{#each teams as team}
+		<p><a href={`/${team.slug}`}>{team.cleanName}</a></p>
+	{/each}
 
-<h2>Featured Articles</h2>
-{#each featured as article}
-	<p>{article.cleanName}</p>
-{/each}
+	<h2>Featured Articles</h2>
+	{#each featured as article}
+		<p>{article.cleanName}</p>
+	{/each}
+</div>
 
-<h1>NYT Library</h1>
+<style>
+	div {
+		color: var(--color-secondary-contrast);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.hero {
+		/* center the hero */
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		padding-top: 10rem;
+	}
+
+	.tagline {
+		font-size: 15px;
+	}
+</style>
