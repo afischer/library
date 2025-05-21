@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Chip from '$lib/components/Chip.svelte';
 	import LogoLockup from '$lib/components/LogoLockup.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { FileTree } from '$lib/types';
@@ -7,7 +8,9 @@
 		tree: FileTree;
 	};
 
-	const featured = Object.values(data.tree.children).find((node) => node.tags.includes('featured'));
+	const featured = Object.values(data.tree.children).filter((node) =>
+		node.tags.includes('featured')
+	);
 	const teams = Object.values(data.tree.children).filter((node) => node.tags.includes('team'));
 
 	console.log(featured, teams);
@@ -20,42 +23,88 @@
 	</p>
 
 	<a href="/categories">view all files</a>
+	<div class="search-bar">
+		<SearchBar />
+	</div>
 </div>
 
-<div class="search-bar">
-	<SearchBar />
-</div>
+<div class="home-content">
+	<section class="teams-section">
+		<h2>Teams</h2>
+		<div class="chips">
+			{#each teams as team}
+				<Chip href={`/${team.slug}`}>{team.cleanName}</Chip>
+			{/each}
+		</div>
+	</section>
 
-<div class="teams">
-	<h2>Teams</h2>
-	{#each teams as team}
-		<p><a href={`/${team.slug}`}>{team.cleanName}</a></p>
-	{/each}
-
-	<h2>Featured Articles</h2>
-	{#each featured as article}
-		<p>{article.cleanName}</p>
-	{/each}
+	<section class="featured-section">
+		<h2>Useful Docs</h2>
+		<ul class="articles">
+			{#each featured as article}
+				<li><a href={`/${article.slug}`}>{article.cleanName}</a></li>
+			{/each}
+		</ul>
+	</section>
 </div>
 
 <style>
-	div {
+	.hero,
+	.home-content {
 		color: var(--color-secondary-contrast);
 		max-width: 600px;
 		margin: 0 auto;
 	}
 
 	.hero {
-		/* center the hero */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-
 		padding-top: 10rem;
 	}
 
 	.tagline {
 		font-size: 15px;
+	}
+
+	.home-content {
+		margin: 4rem auto;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		font-size: 15px;
+	}
+
+	h2 {
+		font-size: 15px;
+		margin-bottom: 15px;
+		color: var(--color-secondary-contrast);
+	}
+
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+	}
+
+	/* @media (max-width: 768px) {
+		.home-content {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+	} */
+
+	li {
+		list-style-type: none;
+		cursor: pointer;
+		display: inline-flex;
+		width: 100%;
+	}
+
+	li.file::before {
+		content: url('/img/document.svg');
+		margin-right: 0.5rem;
+		margin-left: -6px;
 	}
 </style>

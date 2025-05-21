@@ -2,6 +2,7 @@
 	import type { FileTreeNode } from '$lib/types';
 
 	import Category from '$lib/components/Category.svelte';
+	import Box from '$lib/components/Box.svelte';
 
 	export let data: { tree: FileTreeNode };
 </script>
@@ -10,22 +11,13 @@
 
 <section>
 	{#each Object.values(data.tree.children) as node}
-		<div class="category-card">
+		<Box maxHeight={450}>
 			<Category {node} />
-		</div>
+		</Box>
 	{/each}
 </section>
 
 <style>
-	.category-card {
-		margin: 0 12px 30px 12px;
-		padding: 25px;
-		border: 1px solid #999999;
-		box-shadow: -4px -4px 0px 0px #efefef;
-		max-height: 450px;
-		overflow-y: scroll;
-	}
-
 	section {
 		padding-top: 1rem;
 		display: grid;

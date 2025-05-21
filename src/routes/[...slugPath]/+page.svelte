@@ -6,6 +6,8 @@
 	import type { FileTreeNode } from '$lib/types';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
+	import Box from '$lib/components/Box.svelte';
+	import ArticleHeader from '$lib/components/ArticleHeader.svelte';
 	export let data: {
 		doc: docs_v1.Schema$Document;
 		revision: drive_v3.Schema$Revision;
@@ -17,26 +19,7 @@
 
 <header>
 	<SearchBar />
-	<h1>{data.tree.cleanName}</h1>
-	{#if data.revision}
-		<p>
-			{#if data.revision.lastModifyingUser}
-				<Avatar user={data.revision.lastModifyingUser} />
-			{/if}
-			Created {data.revision.lastModifyingUser?.displayName &&
-				'by ' + data.revision.lastModifyingUser?.displayName}
-			at {data.revision.modifiedTime}.
-		</p>
-		<p>
-			{#if data.tree.file.lastModifyingUser}
-				<Avatar user={data.tree.file.lastModifyingUser} />
-				Last modified by {data.tree.file.lastModifyingUser?.displayName} at
-				{data.tree.file.modifiedTime}.
-			{:else}
-				Last modified at {data.tree.file.modifiedTime}.
-			{/if}
-		</p>
-	{/if}
+	<ArticleHeader node={data.tree} revision={data.revision} />
 </header>
 
 <article>
@@ -45,10 +28,10 @@
 
 <aside>
 	{#if Object.values(data.tree.children).length > 0}
-		<div style="border: 1px solid black; padding: 1rem;">
-			<h2>Pages in {data.tree.cleanName}</h2>
+		<Box>
+			<h3>Pages in {data.tree.cleanName}</h3>
 			<Category node={data.tree} />
-		</div>
+		</Box>
 	{/if}
 </aside>
 
@@ -62,5 +45,10 @@
 
 	header {
 		margin-top: 2rem;
+	}
+
+	h3 {
+		margin: 0 0 10px;
+		font-weight: 600;
 	}
 </style>
