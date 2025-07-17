@@ -73,6 +73,21 @@ async function listAllFiles(): Promise<drive_v3.Schema$File[]> {
 		// nextPageToken = undefined;
 	}
 
+	// sort by title, then all folders to the top
+	allFiles
+		.sort((a, b) => {
+			if (a.name === b.name) {
+				return 0;
+			}
+			return a.name?.localeCompare(b.name ?? '') ?? 0;
+		})
+		.sort((a, b) => {
+			if (a.mimeType === b.mimeType) {
+				return 0;
+			}
+			return a.mimeType === 'application/vnd.google-apps.folder' ? -1 : 1;
+		});
+
 	return allFiles;
 }
 

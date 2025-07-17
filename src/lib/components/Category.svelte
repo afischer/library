@@ -47,14 +47,10 @@
 
 	details > summary::before {
 		content: url('/img/folder.svg');
-		margin-right: 0.5rem;
-		margin-left: -24px;
 	}
 
 	details[open] > summary::before {
 		content: url('/img/folder-open.svg');
-		margin-right: 0.5rem;
-		margin-left: -24px;
 	}
 
 	ul {
@@ -72,25 +68,13 @@
 
 	li.file::before {
 		content: url('/img/document.svg');
-		margin-right: 0.5rem;
-		margin-left: -6px;
+		/* margin-right: 0.5rem;
+		margin-left: -6px; */
 	}
 
 	details {
 		border-left: 1px solid #ccc;
 		padding-left: 1rem;
 		margin: 0;
-	}
-
-	p {
-		border-left: 1px solid #ccc;
-		margin: 0;
-		padding-left: 2.05rem;
-	}
-
-	details summary p {
-		border: none;
-		padding-left: 0;
-		display: inline-block;
 	}
 </style>

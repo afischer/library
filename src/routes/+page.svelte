@@ -2,15 +2,28 @@
 	import Chip from '$lib/components/Chip.svelte';
 	import LogoLockup from '$lib/components/LogoLockup.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
-	import type { FileTree } from '$lib/types';
+	import type { FileTree, FileTreeNode } from '$lib/types';
 
 	export let data: {
 		tree: FileTree;
 	};
 
-	const featured = Object.values(data.tree.children).filter((node) =>
-		node.tags.includes('featured')
-	);
+	const getFeaturedNodes = (tree: FileTree): FileTreeNode[] => {
+		const featuredNodes: FileTreeNode[] = [];
+
+		const traverseTree = (node: FileTreeNode) => {
+			if (node.tags.includes('featured')) {
+				featuredNodes.push(node);
+			}
+			Object.values(node.children).forEach(traverseTree);
+		};
+
+		Object.values(tree.children).forEach(traverseTree);
+
+		return featuredNodes;
+	};
+
+	const featured = getFeaturedNodes(data.tree);
 	const teams = Object.values(data.tree.children).filter((node) => node.tags.includes('team'));
 
 	console.log(featured, teams);
@@ -106,5 +119,10 @@
 		content: url('/img/document.svg');
 		margin-right: 0.5rem;
 		margin-left: -6px;
+	}
+
+	.search-bar {
+		width: 100%;
+		margin-top: 1rem;
 	}
 </style>

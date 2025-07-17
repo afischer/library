@@ -5,7 +5,7 @@
 
 	export let paragraph: docs_v1.Schema$Paragraph;
 	export let inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
-	export let listProperties: Record<string, docs_v1.Schema$ListProperties> | undefined;
+	export let listProperties: Record<string, docs_v1.Schema$List> | undefined;
 	// if (paragraph.bullet) {
 	// 	console.log(JSON.stringify(paragraph, null, 2));
 	// }

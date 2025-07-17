@@ -5,7 +5,7 @@
 
 	export let structuralElement: docs_v1.Schema$StructuralElement;
 	export let inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
-	export let listProperties: Record<string, docs_v1.Schema$ListProperties> | undefined;
+	export let listProperties: Record<string, docs_v1.Schema$List> | undefined;
 </script>
 
 {#if structuralElement.paragraph}

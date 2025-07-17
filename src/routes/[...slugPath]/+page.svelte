@@ -50,5 +50,10 @@
 	h3 {
 		margin: 0 0 10px;
 		font-weight: 600;
+		font-size: 16px;
+	}
+
+	aside {
+		margin-top: 2rem;
 	}
 </style>
