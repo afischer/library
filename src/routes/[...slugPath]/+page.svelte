@@ -14,13 +14,14 @@
 		headings: Heading[] | undefined;
 		revision: drive_v3.Schema$Revision;
 		tree: FileTreeNode;
+		titles: string[];
 	};
 
 	export const hydrate = false;
 </script>
 
 <header>
-	<SearchBar node={data.tree} />
+	<SearchBar typeaheadValues={data.titles} />
 	<ArticleHeader node={data.tree} revision={data.revision} />
 </header>
 
@@ -37,7 +38,7 @@
 {/if}
 
 <aside>
-	{#if Object.values(data.tree.children).length > 0}
+	{#if data?.tree?.children}
 		<Box>
 			<h3>Pages in {data.tree.cleanName}</h3>
 			<Category node={data.tree} />

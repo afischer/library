@@ -6,6 +6,7 @@
 
 	export let data: {
 		tree: FileTree;
+		titles: string[];
 	};
 
 	const getFeaturedNodes = (tree: FileTree): FileTreeNode[] => {
@@ -25,8 +26,6 @@
 
 	const featured = getFeaturedNodes(data.tree);
 	const teams = Object.values(data.tree.children).filter((node) => node.tags.includes('team'));
-
-	console.log(featured, teams);
 </script>
 
 <div class="hero">
@@ -37,7 +36,7 @@
 
 	<a href="/categories">view all files</a>
 	<div class="search-bar">
-		<SearchBar tree={data.tree} />
+		<SearchBar typeaheadValues={data.titles} />
 	</div>
 </div>
 

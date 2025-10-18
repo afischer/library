@@ -6,17 +6,15 @@
 	const nestedHeadings = headings.reduce(
 		(acc, heading) => {
 			if (heading.level > 3) return acc; // for now
-			if (heading.level === 1) {
+			if (heading.level === 1 || heading.level === 2) {
 				acc.push({ heading, children: [] });
 			} else {
-				acc[acc.length - 1].children.push(heading);
+				acc[acc.length - 1]?.children?.push(heading);
 			}
 			return acc;
 		},
 		[] as { heading: Heading; children: Heading[] }[]
 	);
-
-	console.log(JSON.stringify(nestedHeadings, null, 2));
 </script>
 
 {#if headings.length > 0}
@@ -24,7 +22,9 @@
 	<ul>
 		{#each nestedHeadings as heading}
 			<li>
-				<a href={`#${heading.heading.hash}`}>{heading.heading.title}</a>
+				<a href={`#${heading.heading.hash}`} class:nested={heading.heading.level === 2}
+					>{heading.heading.title}</a
+				>
 				{#if heading.children.length > 0}
 					<ul>
 						{#each heading.children as child}
@@ -53,6 +53,15 @@
 	li a {
 		text-decoration: none;
 		color: var(--color-text);
+	}
+
+	li a.nested {
+		display: flex;
+	}
+
+	li a.nested::before {
+		content: '—';
+		margin-right: 10px;
 	}
 
 	ul li {

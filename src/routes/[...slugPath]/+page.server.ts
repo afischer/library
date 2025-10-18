@@ -27,6 +27,7 @@ export const load: ServerLoad = async ({ locals }) => {
 		doc,
 		headings: getHeadings(doc?.body?.content ?? []),
 		revision,
-		tree: locals.tree
+		tree: locals.tree,
+		titles: locals.titles
 	};
 };

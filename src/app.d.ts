@@ -7,6 +7,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			tree?: FileTreeNode;
+			titles?: string[];
 		}
 		// interface PageData {}
 		// interface PageState {}
