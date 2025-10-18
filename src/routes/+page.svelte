@@ -37,7 +37,7 @@
 
 	<a href="/categories">view all files</a>
 	<div class="search-bar">
-		<SearchBar />
+		<SearchBar tree={data.tree} />
 	</div>
 </div>
 

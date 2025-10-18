@@ -15,7 +15,7 @@
 <!-- size down each header since H1 is reserved for the title -->
 <!-- {JSON.stringify(inlineObjects)} -->
 {#if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_1'}
-	<h2>
+	<h2 id={paragraph?.paragraphStyle?.headingId ?? ''}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element.textRun} />
@@ -23,7 +23,7 @@
 		{/each}
 	</h2>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_2'}
-	<h3>
+	<h3 id={paragraph?.paragraphStyle?.headingId ?? ''}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -31,7 +31,7 @@
 		{/each}
 	</h3>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_3'}
-	<h4>
+	<h4 id={paragraph?.paragraphStyle?.headingId ?? ''}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -39,7 +39,7 @@
 		{/each}
 	</h4>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_4'}
-	<h5>
+	<h5 id={paragraph?.paragraphStyle?.headingId ?? ''}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -47,7 +47,7 @@
 		{/each}
 	</h5>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_5'}
-	<h6>
+	<h6 id={paragraph?.paragraphStyle?.headingId ?? ''}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />

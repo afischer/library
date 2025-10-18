@@ -1,7 +1,7 @@
 import type { ServerLoad } from '@sveltejs/kit';
 
 export const ssr = true;
-export const csr = false;
+export const csr = true;
 export const prerender = true;
 
 // todo: routematcher for 404

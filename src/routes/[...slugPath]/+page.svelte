@@ -3,13 +3,15 @@
 
 	import Document from '$lib/components/Document/index.svelte';
 	import Category from '$lib/components/Category.svelte';
-	import type { FileTreeNode } from '$lib/types';
+	import type { FileTreeNode, Heading } from '$lib/types';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import Box from '$lib/components/Box.svelte';
 	import ArticleHeader from '$lib/components/ArticleHeader.svelte';
+	import TableOfContents from '$lib/components/TableOfContents.svelte';
 	export let data: {
-		doc: docs_v1.Schema$Document;
+		doc: docs_v1.Schema$Document | undefined;
+		headings: Heading[] | undefined;
 		revision: drive_v3.Schema$Revision;
 		tree: FileTreeNode;
 	};
@@ -18,13 +20,21 @@
 </script>
 
 <header>
-	<SearchBar />
+	<SearchBar node={data.tree} />
 	<ArticleHeader node={data.tree} revision={data.revision} />
 </header>
 
-<article>
-	<Document document={data.doc} />
-</article>
+{#if data.headings}
+	<nav class="toc">
+		<TableOfContents headings={data.headings} />
+	</nav>
+{/if}
+
+{#if data.doc}
+	<article>
+		<Document document={data.doc} />
+	</article>
+{/if}
 
 <aside>
 	{#if Object.values(data.tree.children).length > 0}
@@ -44,7 +54,7 @@
 	}
 
 	header {
-		margin-top: 2rem;
+		padding-top: 5rem;
 	}
 
 	h3 {
@@ -55,5 +65,17 @@
 
 	aside {
 		margin-top: 2rem;
+	}
+
+	.toc {
+		float: left;
+		/* position: -webkit-sticky; */
+		position: sticky;
+		top: 100px;
+		width: 220px;
+		font-weight: 300;
+		padding: 10px 20px;
+		height: calc(100vh - 100px);
+		overflow: scroll;
 	}
 </style>

@@ -2,7 +2,7 @@ import { search } from '$lib/server/search';
 import type { ServerLoad } from '@sveltejs/kit';
 
 export const ssr = true;
-export const csr = false;
+export const csr = true;
 export const prerender = true;
 
 export const load: ServerLoad = async ({ url }) => {

@@ -3,7 +3,7 @@ import type { GaxiosPromise, GaxiosResponse } from 'gaxios';
 import { google } from 'googleapis';
 import type { docs_v1, drive_v3 } from 'googleapis';
 import type { JWT } from 'google-auth-library';
-import type { Breadcrumb, FileTree, FileTreeNode } from '$lib/types';
+import type { Breadcrumb, FileTree, FileTreeNode, Heading } from '$lib/types';
 import { getOrdering } from './metadata';
 import { getTags } from './metadata';
 import slugify from 'slugify';
@@ -106,6 +106,25 @@ export const getAllFiles = async () => {
 		return inFlightPromise;
 	}
 	return allFiles;
+};
+
+export const getHeadings = (content: docs_v1.Schema$StructuralElement[]): Heading[] => {
+	const headings = content.filter((element) =>
+		element.paragraph?.paragraphStyle?.namedStyleType?.startsWith('HEADING_')
+	);
+	const contents: Heading[] = [];
+	for (const heading of headings) {
+		// extract part after HEADING_
+		const level = heading.paragraph?.paragraphStyle?.namedStyleType?.split('_')[1];
+		if (!level) continue;
+		contents.push({
+			level: parseInt(level) as 1 | 2 | 3 | 4 | 5 | 6,
+			title:
+				heading.paragraph?.elements?.flatMap((element) => element.textRun?.content ?? [])[0] ?? '',
+			hash: heading.paragraph?.paragraphStyle?.headingId ?? ''
+		});
+	}
+	return contents;
 };
 
 // Returns the root filetree node

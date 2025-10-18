@@ -6,7 +6,7 @@
 	export let revision: drive_v3.Schema$Revision;
 </script>
 
-<h1>{node.cleanName}</h1>
+<h1>{node?.cleanName}</h1>
 <div class="author-info">
 	{#if revision}
 		<p>

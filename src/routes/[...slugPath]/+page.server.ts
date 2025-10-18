@@ -1,8 +1,8 @@
-import { getFile, getFirstRevision } from '$lib/server/drive';
+import { getFile, getFirstRevision, getHeadings } from '$lib/server/drive';
 import type { ServerLoad } from '@sveltejs/kit';
 
 export const ssr = true;
-export const csr = false;
+export const csr = true;
 export const prerender = true;
 
 // todo: routematcher for 404
@@ -16,12 +16,16 @@ export const load: ServerLoad = async ({ locals }) => {
 
 	// todo: ensure file being fetched is of a supported type (i.e., not a folder or slide deck)
 	// todo: parallelize these requests
-	const { data: doc } = await getFile(locals.tree.home?.file.id ?? locals.tree.file.id);
-	const { data: revision } = await getFirstRevision(
-		locals.tree.home?.file.id ?? locals.tree.file.id
-	);
+
+	const isFolderOnly =
+		!locals.tree.home?.file.id &&
+		locals.tree.file.mimeType === 'application/vnd.google-apps.folder';
+	const fileId = locals.tree.home?.file.id ?? locals.tree.file.id;
+	const { data: doc } = isFolderOnly ? { data: undefined } : await getFile(fileId);
+	const { data: revision } = isFolderOnly ? { data: undefined } : await getFirstRevision(fileId);
 	return {
 		doc,
+		headings: getHeadings(doc?.body?.content ?? []),
 		revision,
 		tree: locals.tree
 	};

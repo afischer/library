@@ -30,6 +30,12 @@ export interface FilenameMetadata {
 	slug: string;
 }
 
+export interface Heading {
+	level: 1 | 2 | 3 | 4 | 5 | 6;
+	title: string;
+	hash: string;
+}
+
 export type FileTreeNode = FilenameMetadata & {
 	file: drive_v3.Schema$File;
 	/**
