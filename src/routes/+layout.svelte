@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import type { Breadcrumb } from '$lib/types';
-	import LogoLockup from '$lib/components/LogoLockup.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	export let data: {
@@ -9,15 +7,13 @@
 	};
 
 	export let children;
-
-	const isHome = page.url.pathname === '/';
 </script>
 
 <header>
 	<Breadcrumbs breadcrumbs={data.breadcrumbs} />
 </header>
 
-<main class:bg-dark={isHome}>
+<main>
 	{@render children()}
 </main>
 
@@ -36,9 +32,5 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	.bg-dark {
-		background-color: var(--color-dark);
 	}
 </style>

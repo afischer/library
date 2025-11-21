@@ -28,7 +28,7 @@
 				{/if}
 			</ul>
 		</summary>
-		{#each Object.values(node.children) as child}
+		{#each Object.values(node.children).sort((a, b) => a.file.name?.localeCompare(b.file.name ?? '') ?? 0) as child}
 			<Category node={child} depth={depth + 1} parentPath={parentPath + '/' + node.slug} />
 		{/each}
 	</details>

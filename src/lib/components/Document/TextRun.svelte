@@ -8,7 +8,6 @@
 	<a class={Object.keys(textRun?.textStyle ?? []).join(' ')} href={textRun?.textStyle?.link.url}>
 		{textRun?.content}
 	</a>
-	<!-- TODO: HEADING -->
 {:else}
 	<span class={Object.keys(textRun?.textStyle ?? []).join(' ')}>
 		{textRun?.content}

@@ -27,6 +27,6 @@
 	.brand-text {
 		margin-left: 0.6rem;
 		padding-left: 1rem;
-		border-left: 1px solid rgba(255, 255, 255, 0.35);
+		border-left: 1px solid var(--color-secondary);
 	}
 </style>

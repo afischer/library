@@ -10,16 +10,16 @@
 {#each document.body?.content ?? [] as structuralElement, i}
 	<!-- NOTE: this will only work if you do NOT CSR as svelte can not parse dynamicly inserted html like this -->
 	{@const lastEl = i === 0 ? null : document.body?.content?.[i - 1]}
-	{#if (lastEl?.paragraph?.bullet && !structuralElement.paragraph?.bullet) || (lastEl?.paragraph?.bullet?.nestingLevel ?? 0) > (structuralElement?.paragraph?.bullet?.nestingLevel ?? 0)}
+	<!-- {#if (lastEl?.paragraph?.bullet && !structuralElement.paragraph?.bullet) || (lastEl?.paragraph?.bullet?.nestingLevel ?? 0) > (structuralElement?.paragraph?.bullet?.nestingLevel ?? 0)}
 		{@html '</ul>'}
-	{/if}
+	{/if} -->
 	{#if (!lastEl?.paragraph?.bullet && structuralElement.paragraph?.bullet) || (lastEl?.paragraph?.bullet?.nestingLevel ?? 0) < (structuralElement?.paragraph?.bullet?.nestingLevel ?? 0)}
 		{@const list = document?.lists?.[structuralElement.paragraph?.bullet?.listId ?? '']}
 		{@const nestStyle =
 			list?.listProperties?.nestingLevels?.[structuralElement.paragraph?.bullet?.nestingLevel ?? 0]}
-		{@html nestStyle?.glyphSymbol
+		<!-- {@html nestStyle?.glyphSymbol
 			? `<ul style="list-style-type: '${nestStyle.glyphSymbol} ';"">`
-			: `<ul>`}
+			: `<ul>`} -->
 	{/if}
 	<StructuralElement
 		{structuralElement}

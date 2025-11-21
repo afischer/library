@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$lib/components/Button.svelte';
 	import Chip from '$lib/components/Chip.svelte';
 	import LogoLockup from '$lib/components/LogoLockup.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
@@ -34,7 +35,6 @@
 		A collection of tools and tips for creating great journalism. <a href="/faq">Get started</a>.
 	</p>
 
-	<a href="/categories">view all files</a>
 	<div class="search-bar">
 		<SearchBar typeaheadValues={data.titles} />
 	</div>
@@ -57,13 +57,15 @@
 				<li><a href={`/${article.slug}`}>{article.cleanName}</a></li>
 			{/each}
 		</ul>
+
+		<Button href="/categories">View All Docs</Button>
 	</section>
 </div>
 
 <style>
 	.hero,
 	.home-content {
-		color: var(--color-secondary-contrast);
+		color: var(--color-secondary);
 		max-width: 600px;
 		margin: 0 auto;
 	}
@@ -91,21 +93,19 @@
 	h2 {
 		font-size: 15px;
 		margin-bottom: 15px;
-		color: var(--color-secondary-contrast);
+		color: var(--color-secondary);
 	}
 
+	ul {
+		margin: 0;
+		padding: 0;
+		line-height: 1.8;
+	}
 	.chips {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 5px;
 	}
-
-	/* @media (max-width: 768px) {
-		.home-content {
-			grid-template-columns: 1fr;
-			gap: 2rem;
-		}
-	} */
 
 	li {
 		list-style-type: none;
@@ -114,8 +114,16 @@
 		width: 100%;
 	}
 
-	li.file::before {
+	li a {
+		margin-top: -0.15rem;
+		margin-left: 0.5rem;
+		color: var(--color-secondary);
+		text-decoration: none;
+	}
+
+	li::before {
 		content: url('/img/document.svg');
+		display: contents;
 		margin-right: 0.5rem;
 		margin-left: -6px;
 	}

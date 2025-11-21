@@ -3,13 +3,12 @@
 
 /* add color variables for light and dark mode */
 :root {
-  /* --background-color: #f0f0f0; */
-  /* --text-color: #000; */
   
   --color-primary: #E16D6D;
   --color-primary-light: #FCF6F6;
   --color-secondary: #404040;
   --color-secondary-contrast: #ccc;
+  --color-secondary-contrast-light: #ececec;
   --color-dark: #222;
   --color-gray: #999;
   --color-light: #fff;
@@ -36,7 +35,7 @@ body {
   font-weight: var(--font-weight-light);
 
   font-size: 1.125rem;
-    line-height: 1.5;
+  line-height: 1.5;
   background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;

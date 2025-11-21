@@ -12,5 +12,5 @@
 	<Paragraph paragraph={structuralElement.paragraph} {inlineObjects} {listProperties} />
 {/if}
 {#if structuralElement.table}
-	<Table table={structuralElement.table} />
+	<Table table={structuralElement.table} {inlineObjects} {listProperties} />
 {/if}
