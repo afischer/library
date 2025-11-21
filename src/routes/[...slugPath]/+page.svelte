@@ -19,11 +19,17 @@
 	};
 
 	export const hydrate = false;
+
+	const firstParagraph = data.doc?.body?.content?.find((element) => !!element.paragraph);
 </script>
 
 <header>
 	<SearchBar typeaheadValues={data.titles} />
-	<ArticleHeader node={data.tree} revision={data.revision} />
+	<ArticleHeader
+		node={data.tree.home ?? data.tree}
+		revision={data.tree.home?.revision ?? data.revision}
+		firstElement={firstParagraph}
+	/>
 </header>
 
 {#if data.headings}
@@ -104,6 +110,12 @@
 		padding: 10px 20px;
 		height: calc(100vh - 100px);
 		overflow: scroll;
+	}
+
+	@media (max-width: 1040px) {
+		.toc {
+			display: none;
+		}
 	}
 
 	.footer {

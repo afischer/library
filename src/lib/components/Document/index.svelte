@@ -31,7 +31,6 @@
 			}
 		});
 
-		// Don't forget the last list group if content ends with a list
 		if (currentListGroup) {
 			grouped.push({ type: 'list', items: currentListGroup });
 		}

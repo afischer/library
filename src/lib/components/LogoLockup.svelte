@@ -25,8 +25,9 @@
 	}
 
 	.brand-text {
-		margin-left: 0.6rem;
+		margin-left: 0.75rem;
 		padding-left: 1rem;
-		border-left: 1px solid var(--color-secondary);
+		border-left: 1px solid;
+		border-color: inherit;
 	}
 </style>

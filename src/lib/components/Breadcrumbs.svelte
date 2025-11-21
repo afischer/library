@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import type { Breadcrumb } from '$lib/types';
 	import LogoLockup from '$lib/components/LogoLockup.svelte';
 
@@ -17,6 +18,8 @@
 				</li>
 			{/each}
 		</ol>
+	{:else if page.url.pathname !== '/'}
+		<LogoLockup />
 	{/if}
 </nav>
 
