@@ -9,6 +9,7 @@
 	import Box from '$lib/components/Box.svelte';
 	import ArticleHeader from '$lib/components/ArticleHeader.svelte';
 	import TableOfContents from '$lib/components/TableOfContents.svelte';
+	import Button from '$lib/components/Button.svelte';
 	export let data: {
 		doc: docs_v1.Schema$Document | undefined;
 		headings: Heading[] | undefined;
@@ -37,13 +38,33 @@
 	</article>
 {/if}
 
-<aside>
+<aside class="footer">
 	{#if data?.tree?.children}
 		<Box>
 			<h3>Pages in {data.tree.cleanName}</h3>
 			<Category node={data.tree} />
 		</Box>
 	{/if}
+
+	<hr class="separator" />
+	<Button href={`https://docs.google.com/document/d/${data.doc?.documentId}/edit`}
+		>Edit This Page</Button
+	>
+	{#if data.tree?.file?.parents?.length}
+		<Button href="https://drive.google.com/drive/u/0/folders/{data.tree.file.parents[0]}"
+			>View Folder</Button
+		>
+	{/if}
+
+	<p>
+		<small
+			>For help contributing or to report a problem, email <a href="mailto:library@nytimes.com"
+				>library@nytimes.com</a
+			>
+			or leave a message in the <a href="https://nytnews.slack.com/messages/library">#library</a> slack
+			channel.</small
+		>
+	</p>
 </aside>
 
 <style>
@@ -68,6 +89,11 @@
 		margin-top: 2rem;
 	}
 
+	.separator {
+		border-top: 1px solid var(--color-secondary-contrast);
+		margin-top: 8rem;
+	}
+
 	.toc {
 		float: left;
 		/* position: -webkit-sticky; */
@@ -78,5 +104,14 @@
 		padding: 10px 20px;
 		height: calc(100vh - 100px);
 		overflow: scroll;
+	}
+
+	.footer {
+		font-size: 0.9rem;
+		margin: 5rem auto;
+	}
+
+	p small {
+		line-height: 0.8;
 	}
 </style>

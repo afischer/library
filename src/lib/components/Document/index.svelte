@@ -1,29 +1,61 @@
 <script lang="ts">
 	import type { docs_v1 } from 'googleapis';
 	import StructuralElement from './StructuralElement.svelte';
+	import List from './List.svelte';
 
 	export let document: docs_v1.Schema$Document;
 
-	// console.log(JSON.stringify(document.lists, null, 2));
+	// Group consecutive list items together
+	function groupContent(content: docs_v1.Schema$StructuralElement[]) {
+		const grouped: Array<{
+			type: 'list' | 'other';
+			items: docs_v1.Schema$StructuralElement[];
+		}> = [];
+
+		let currentListGroup: docs_v1.Schema$StructuralElement[] | null = null;
+
+		content.forEach((element) => {
+			const isList = !!element.paragraph?.bullet;
+
+			if (isList) {
+				if (!currentListGroup) {
+					currentListGroup = [];
+				}
+				currentListGroup.push(element);
+			} else {
+				if (currentListGroup) {
+					grouped.push({ type: 'list', items: currentListGroup });
+					currentListGroup = null;
+				}
+				grouped.push({ type: 'other', items: [element] });
+			}
+		});
+
+		// Don't forget the last list group if content ends with a list
+		if (currentListGroup) {
+			grouped.push({ type: 'list', items: currentListGroup });
+		}
+
+		return grouped;
+	}
+
+	$: groupedContent = groupContent(document.body?.content ?? []);
 </script>
 
-{#each document.body?.content ?? [] as structuralElement, i}
-	<!-- NOTE: this will only work if you do NOT CSR as svelte can not parse dynamicly inserted html like this -->
-	{@const lastEl = i === 0 ? null : document.body?.content?.[i - 1]}
-	<!-- {#if (lastEl?.paragraph?.bullet && !structuralElement.paragraph?.bullet) || (lastEl?.paragraph?.bullet?.nestingLevel ?? 0) > (structuralElement?.paragraph?.bullet?.nestingLevel ?? 0)}
-		{@html '</ul>'}
-	{/if} -->
-	{#if (!lastEl?.paragraph?.bullet && structuralElement.paragraph?.bullet) || (lastEl?.paragraph?.bullet?.nestingLevel ?? 0) < (structuralElement?.paragraph?.bullet?.nestingLevel ?? 0)}
-		{@const list = document?.lists?.[structuralElement.paragraph?.bullet?.listId ?? '']}
-		{@const nestStyle =
-			list?.listProperties?.nestingLevels?.[structuralElement.paragraph?.bullet?.nestingLevel ?? 0]}
-		<!-- {@html nestStyle?.glyphSymbol
-			? `<ul style="list-style-type: '${nestStyle.glyphSymbol} ';"">`
-			: `<ul>`} -->
+{#each groupedContent as group}
+	{#if group.type === 'list'}
+		<List
+			items={group.items}
+			listProperties={document.lists ?? {}}
+			inlineObjects={document.inlineObjects ?? {}}
+		/>
+	{:else}
+		{#each group.items as structuralElement}
+			<StructuralElement
+				{structuralElement}
+				inlineObjects={document.inlineObjects ?? {}}
+				listProperties={document.lists ?? {}}
+			/>
+		{/each}
 	{/if}
-	<StructuralElement
-		{structuralElement}
-		inlineObjects={document.inlineObjects ?? {}}
-		listProperties={document.lists ?? {}}
-	/>
 {/each}

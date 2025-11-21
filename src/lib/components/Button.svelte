@@ -3,7 +3,7 @@
 </script>
 
 {#if href}
-	<a {href} class="button">
+	<a {href} class="button" target="_blank" rel="noopener noreferrer">
 		<slot />
 	</a>
 {:else}

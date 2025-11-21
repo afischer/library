@@ -15,7 +15,7 @@
 <!-- size down each header since H1 is reserved for the title -->
 <!-- {JSON.stringify(inlineObjects)} -->
 {#if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_1'}
-	<h2 id={paragraph?.paragraphStyle?.headingId ?? ''}>
+	<h2 id={paragraph?.paragraphStyle?.headingId}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element.textRun} />
@@ -23,7 +23,7 @@
 		{/each}
 	</h2>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_2'}
-	<h3 id={paragraph?.paragraphStyle?.headingId ?? ''}>
+	<h3 id={paragraph?.paragraphStyle?.headingId}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -31,7 +31,7 @@
 		{/each}
 	</h3>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_3'}
-	<h4 id={paragraph?.paragraphStyle?.headingId ?? ''}>
+	<h4 id={paragraph?.paragraphStyle?.headingId}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -39,7 +39,7 @@
 		{/each}
 	</h4>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_4'}
-	<h5 id={paragraph?.paragraphStyle?.headingId ?? ''}>
+	<h5 id={paragraph?.paragraphStyle?.headingId}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -47,7 +47,7 @@
 		{/each}
 	</h5>
 {:else if paragraph?.paragraphStyle?.namedStyleType === 'HEADING_5'}
-	<h6 id={paragraph?.paragraphStyle?.headingId ?? ''}>
+	<h6 id={paragraph?.paragraphStyle?.headingId}>
 		{#each paragraph.elements ?? [] as element}
 			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
@@ -55,16 +55,7 @@
 		{/each}
 	</h6>
 {:else if paragraph.bullet && listProperties}
-	<!-- this is a nightmare fix this -->
-	<!-- <code>{JSON.stringify(nestStyle)}</code> ----- -->
-	<!-- <code>{JSON.stringify(paragraph.bullet)}</code> -->
-	<li>
-		{#each paragraph.elements ?? [] as element}
-			{#if element.textRun}
-				<TextRun textRun={element?.textRun} />
-			{/if}
-		{/each}
-	</li>
+	<!-- List items are now handled by the List component -->
 {:else}
 	<p>
 		{#each paragraph.elements ?? [] as element}
@@ -95,4 +86,13 @@
 	.underline {
 		text-decoration: underline;
 	} */
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin-top: 3rem;
+	}
 </style>

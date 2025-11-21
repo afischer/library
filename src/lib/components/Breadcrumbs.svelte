@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import type { Breadcrumb } from '$lib/types';
 	import LogoLockup from '$lib/components/LogoLockup.svelte';
 
 	export let breadcrumbs: Breadcrumb[];
-
-	const isHome = page.url.pathname === '/';
 </script>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">

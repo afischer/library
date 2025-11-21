@@ -16,7 +16,7 @@ export function getTags(filename: string): Tag[] {
 	return (tags as Tag[]) ?? [];
 }
 
-const orderingRegex: RegExp = /^([0-9]+)\s+?[-.)]\s+?/g;
+const orderingRegex: RegExp = /^\s+?([0-9]+)\s+?[-.)]\s+?/g;
 
 /**
  * You can place a number at the begining of your filename to order it, followed
@@ -24,7 +24,7 @@ const orderingRegex: RegExp = /^([0-9]+)\s+?[-.)]\s+?/g;
  */
 export function getOrdering(filename: string): number | null {
 	const ordering = filename.match(orderingRegex);
-	return ordering ? parseInt(ordering[0].replace(/[-.)]/g, '')) : null;
+	return ordering ? parseInt(ordering[0].replace(/[--—.)]/g, '')) : null;
 }
 
 /**

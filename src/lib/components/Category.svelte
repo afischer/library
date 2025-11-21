@@ -1,80 +1,105 @@
 <script lang="ts">
 	import Category from '$lib/components/Category.svelte';
 	import type { FileTreeNode } from '$lib/types';
-	import DocumentIcon from './icons/DocumentIcon.svelte';
-	import FolderIcon from './icons/FolderIcon.svelte';
-	import FolderOpenIcon from './icons/FolderOpenIcon.svelte';
 
 	export let node: FileTreeNode;
 	export let depth: number = 0;
 	export let parentPath: string = '';
+
+	const hasChildren = Object.values(node.children).length > 0;
+	const sortedChildren = Object.values(node.children).sort(
+		(a, b) => a.file.name?.localeCompare(b.file.name ?? '') ?? 0
+	);
 </script>
 
-{#if Object.values(node.children).length > 0}
+{#if hasChildren}
 	<details open={depth === 0}>
 		<summary>
-			<ul>
-				{#if node.file.mimeType === 'application/vnd.google-apps.folder'}
-					{#if node.home}
-						<!-- Folder with home -->
-						<li><a href="{parentPath}/{node.home.slug}">{node.cleanName}</a></li>
-					{:else}
-						<!-- Folder with no home -->
-						<li>{node.cleanName}</li>
-					{/if}
-				{:else}
-					<!-- Individual file -->
-					<li><a href="{parentPath}/{node.slug}">{node.cleanName}</a></li>
-				{/if}
-			</ul>
+			{#if node.home}
+				<a href="{parentPath}/{node.home.slug}">{node.cleanName}</a>
+			{:else}
+				<span>{node.cleanName}</span>
+			{/if}
 		</summary>
-		{#each Object.values(node.children).sort((a, b) => a.file.name?.localeCompare(b.file.name ?? '') ?? 0) as child}
-			<Category node={child} depth={depth + 1} parentPath={parentPath + '/' + node.slug} />
-		{/each}
+		<div class="children">
+			{#each sortedChildren as child}
+				<Category node={child} depth={depth + 1} parentPath="{parentPath}/{node.slug}" />
+			{/each}
+		</div>
 	</details>
 {:else}
-	<li class="file"><a href="{parentPath}/{node.slug}">{node.cleanName}</a></li>
+	<div class="file">
+		<a href="{parentPath}/{node.slug}">{node.cleanName}</a>
+	</div>
 {/if}
 
 <style>
-	details > summary {
-		list-style-type: none;
+	details {
+		margin: 0;
 	}
 
-	details > summary::-webkit-details-marker {
+	summary {
+		list-style-type: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.25rem 0;
+	}
+
+	summary::-webkit-details-marker {
 		display: none;
 	}
 
-	details > summary::before {
-		content: url('/img/folder.svg');
+	summary::before {
+		content: '';
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+		background-image: url('/img/folder.svg');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
 	}
 
 	details[open] > summary::before {
-		content: url('/img/folder-open.svg');
+		background-image: url('/img/folder-open.svg');
 	}
 
-	ul {
-		display: inline-block;
-		margin: 0;
-		padding: 0;
-	}
-
-	li {
-		list-style-type: none;
-		cursor: pointer;
-		display: inline-flex;
-		width: 100%;
-	}
-
-	li.file::before {
-		content: url('/img/document.svg');
-		/* margin-right: 0.5rem;
-		margin-left: -6px; */
-	}
-
-	details {
+	.children {
 		border-left: 1px solid #ccc;
 		padding-left: 1rem;
-		margin: 0;
+		margin-left: 0.5rem;
+	}
+
+	.file {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.25rem 0;
+	}
+
+	.file::before {
+		content: '';
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+		background-image: url('/img/document.svg');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	span {
+		color: #666;
 	}
 </style>

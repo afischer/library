@@ -169,10 +169,13 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode> {
 		if (file.id && childrenMap[file.id]) {
 			node.children = childrenMap[file.id].reduce((acc: FileTree, child) => {
 				const childNode = buildTree(child);
-				acc[childNode.slug] = childNode;
 
 				// attach home page if one exists.
-				if (childNode.tags.includes('home')) node.home = childNode;
+				if (childNode.tags.includes('home')) {
+					node.home = childNode;
+				} else {
+					acc[childNode.slug] = childNode;
+				}
 
 				return acc;
 			}, {});

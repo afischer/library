@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let maxHeight: number | undefined = undefined;
+	export let className: string | undefined = undefined;
 </script>
 
 <div

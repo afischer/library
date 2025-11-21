@@ -10,17 +10,19 @@
 		titles: string[];
 	};
 
-	const getFeaturedNodes = (tree: FileTree): FileTreeNode[] => {
-		const featuredNodes: FileTreeNode[] = [];
+	const getFeaturedNodes = (tree: FileTree): { url: string; name: string }[] => {
+		const featuredNodes: { url: string; name: string }[] = [];
 
-		const traverseTree = (node: FileTreeNode) => {
+		const traverseTree = (node: FileTreeNode, parentPath = '') => {
 			if (node.tags.includes('featured')) {
-				featuredNodes.push(node);
+				featuredNodes.push({ url: `${parentPath}/${node.slug}`, name: node.cleanName });
 			}
-			Object.values(node.children).forEach(traverseTree);
+			Object.values(node.children).forEach((child) =>
+				traverseTree(child, `${parentPath}/${node.slug}`)
+			);
 		};
 
-		Object.values(tree.children).forEach(traverseTree);
+		Object.values(tree.children).forEach((child) => traverseTree(child));
 
 		return featuredNodes;
 	};
@@ -54,7 +56,7 @@
 		<h2>Useful Docs</h2>
 		<ul class="articles">
 			{#each featured as article}
-				<li><a href={`/${article.slug}`}>{article.cleanName}</a></li>
+				<li><a href={article.url}>{article.name}</a></li>
 			{/each}
 		</ul>
 
