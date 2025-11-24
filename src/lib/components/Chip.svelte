@@ -23,7 +23,7 @@
 		align-items: center;
 		justify-content: center;
 		padding: 5px 10px;
-		background-color: #000;
+		background-color: var(--color-secondary);
 		color: var(--color-secondary-contrast);
 		text-decoration: none;
 	}

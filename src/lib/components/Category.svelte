@@ -11,18 +11,30 @@
 	let { node, depth = 0, parentPath = '' }: Props = $props();
 
 	const hasChildren = Object.values(node.children).length > 0;
-	const sortedChildren = Object.values(node.children).sort(
-		(a, b) => a.file.name?.localeCompare(b.file.name ?? '') ?? 0
-	);
+	const sortedChildren = Object.values(node.children).sort((a, b) => {
+		const aIsFolder = Object.keys(a.children).length > 0;
+		const bIsFolder = Object.keys(b.children).length > 0;
+
+		if (aIsFolder && !bIsFolder) return -1;
+		if (!aIsFolder && bIsFolder) return 1;
+
+		return a.file.name?.localeCompare(b.file.name ?? '') ?? 0;
+	});
 </script>
 
-{#if hasChildren}
-	<details open={depth === 0}>
+{#if depth === 0 && hasChildren}
+	<!-- Top-level: just render children without the folder wrapper -->
+	{#each sortedChildren as child}
+		<Category node={child} depth={depth + 1} {parentPath} />
+	{/each}
+{:else if hasChildren}
+	<!-- Nested folders: render with details/summary -->
+	<details open={depth === 1}>
 		<summary>
 			{#if node.home}
 				<a href="{parentPath}/{node.home.slug}">{node.cleanName}</a>
 			{:else}
-				<span>{node.cleanName}</span>
+				<a href="{parentPath}/{node.slug}">{node.cleanName}</a>
 			{/if}
 		</summary>
 		<div class="children">
@@ -32,6 +44,7 @@
 		</div>
 	</details>
 {:else}
+	<!-- Leaf files -->
 	<div class="file">
 		<a href="{parentPath}/{node.slug}">{node.cleanName}</a>
 	</div>

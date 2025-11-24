@@ -38,6 +38,10 @@ body {
   line-height: 1.5;
 }
 
+p {
+  margin: 0;
+}
+
 /* Set shorter line heights on headings and interactive elements */
 h1,
 h2,

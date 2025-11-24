@@ -22,7 +22,7 @@ export const load: ServerLoad = async ({ locals }) => {
 		locals.tree.file.mimeType === 'application/vnd.google-apps.folder';
 	const fileId = locals.tree.home?.file.id ?? locals.tree.file.id;
 	const { data: doc } = isFolderOnly ? { data: undefined } : await getFile(fileId);
-	const { data: revision } = isFolderOnly ? { data: undefined } : await getFirstRevision(fileId);
+	const revision = isFolderOnly ? {} : await getFirstRevision(fileId);
 
 	return {
 		doc,

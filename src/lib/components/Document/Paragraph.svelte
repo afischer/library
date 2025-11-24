@@ -2,6 +2,7 @@
 	import type { docs_v1 } from 'googleapis';
 	import TextRun from './TextRun.svelte';
 	import InlineObject from './InlineObject.svelte';
+	import Person from './Person.svelte';
 
 	interface Props {
 		paragraph: docs_v1.Schema$Paragraph;
@@ -61,22 +62,24 @@
 {:else if paragraph.bullet && listProperties}
 	<!-- List items are now handled by the List component -->
 {:else}
-	{#each paragraph.elements ?? [] as element}
-		{#if element.textRun}
-			<p>
+	<p>
+		{#each paragraph.elements ?? [] as element}
+			{#if element.textRun}
 				<TextRun textRun={element?.textRun} />
-			</p>
-		{:else if element.inlineObjectElement && element.inlineObjectElement.inlineObjectId}
-			<!-- TODO: this is broken when there are images in tables. -->
-			<InlineObject inlineObject={inlineObjects[element.inlineObjectElement.inlineObjectId]} />
-		{:else if element?.horizontalRule}
-			<hr />
-		{:else}
-			<span class="library-error">
-				LIBRARY ERROR: Unknown element type <pre>{JSON.stringify(element, null, 2)}</pre>
-			</span>
-		{/if}
-	{/each}
+			{:else if element.inlineObjectElement && element.inlineObjectElement.inlineObjectId}
+				<!-- TODO: this is broken when there are images in tables. -->
+				<InlineObject inlineObject={inlineObjects[element.inlineObjectElement.inlineObjectId]} />
+			{:else if element?.horizontalRule}
+				<hr />
+			{:else if element?.person}
+				<Person person={element.person} />
+			{:else}
+				<span class="library-error">
+					LIBRARY ERROR: Unknown element type <code>{JSON.stringify(element, null, 2)}</code>
+				</span>
+			{/if}
+		{/each}
+	</p>
 {/if}
 
 <!-- <pre>
@@ -102,5 +105,10 @@
 	h5,
 	h6 {
 		margin-top: 3rem;
+		margin-bottom: 1rem;
+	}
+
+	p {
+		margin-bottom: 0.8rem;
 	}
 </style>

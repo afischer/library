@@ -11,6 +11,9 @@
 		(acc, heading) => {
 			if (heading.level > 3) return acc; // for now
 			if (heading.level === 1 || heading.level === 2) {
+				if (heading.level > 1) {
+					heading.level -= 1;
+				}
 				acc.push({ heading, children: [] });
 			} else {
 				acc[acc.length - 1]?.children?.push(heading);

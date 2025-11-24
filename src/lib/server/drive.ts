@@ -35,15 +35,21 @@ export async function getFile(fileId: string): GaxiosPromise<docs_v1.Schema$Docu
 	return docs.documents.get({ documentId: fileId, auth: authClient });
 }
 
-export async function getFirstRevision(fileId: string): GaxiosPromise<drive_v3.Schema$Revision> {
+export async function getFirstRevision(fileId: string): Promise<drive_v3.Schema$Revision> {
 	const authClient = await getAuthClient();
 	const drive = google.drive({ version: 'v3' });
-	return drive.revisions.get({
-		fileId,
-		fields: 'modifiedTime,lastModifyingUser',
-		revisionId: '1',
-		auth: authClient
-	});
+	try {
+		const res = await drive.revisions.get({
+			fileId,
+			fields: 'modifiedTime,lastModifyingUser',
+			revisionId: '1',
+			auth: authClient
+		});
+		return res.data;
+	} catch (error) {
+		console.error(error);
+		return {};
+	}
 }
 
 async function listAllFiles(): Promise<drive_v3.Schema$File[]> {

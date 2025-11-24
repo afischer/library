@@ -34,7 +34,19 @@
 		width: 100%;
 	}
 
+	th,
 	td {
 		border: 1px solid black;
+		padding: 0.25rem 0.5rem;
+	}
+
+	:global(th *:first-child),
+	:global(td *:first-child) {
+		margin-top: 0;
+	}
+
+	:global(th *:last-child),
+	:global(td *:last-child) {
+		margin-bottom: 0;
 	}
 </style>

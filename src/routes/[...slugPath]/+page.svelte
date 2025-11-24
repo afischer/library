@@ -10,6 +10,7 @@
 	import ArticleHeader from '$lib/components/ArticleHeader.svelte';
 	import TableOfContents from '$lib/components/TableOfContents.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import { page } from '$app/state';
 	interface Props {
 		data: {
 			doc: docs_v1.Schema$Document | undefined;
@@ -49,10 +50,10 @@
 {/if}
 
 <aside class="footer">
-	{#if data?.tree?.children}
+	{#if Object.values(data?.tree?.children).length}
 		<Box>
 			<h3>Pages in {data.tree.cleanName}</h3>
-			<Category node={data.tree} />
+			<Category node={data.tree} parentPath={page.url.pathname} />
 		</Box>
 	{/if}
 
@@ -101,7 +102,7 @@
 
 	.separator {
 		border-top: 1px solid var(--color-secondary-contrast);
-		margin-top: 8rem;
+		margin-top: 5rem;
 	}
 
 	.toc {
@@ -124,7 +125,7 @@
 
 	.footer {
 		font-size: 0.9rem;
-		margin: 5rem auto;
+		margin: 2rem auto;
 	}
 
 	p small {

@@ -61,19 +61,22 @@
 				Last edited {relativeTime(node.file.modifiedTime)}.
 			{/if}
 		</p>
+		<!-- Folders will not have revisions; use the info in the folder response itself -->
+	{:else if node.file.createdTime && node.file.modifiedTime && node.file?.lastModifyingUser}
+		<p>
+			Last edited by <span class="name">{node.file.lastModifyingUser.displayName}</span>
+			{relativeTime(node.file.modifiedTime)}.
+		</p>
 	{/if}
 </div>
 
 <style>
 	.author-info {
-		border-bottom: 5px solid var(--color-gray);
 		padding: 0.5rem 0 2rem 0;
+		margin-bottom: 2rem;
+		border-bottom: 5px solid var(--color-gray);
 		font-size: 13px;
 		color: var(--color-secondary);
-	}
-
-	.author-info p {
-		line-height: 0.25;
 	}
 
 	.name {
