@@ -36,4 +36,8 @@
 		align-items: center;
 		justify-content: center;
 	}
+
+	main {
+		padding-top: 80px;
+	}
 </style>

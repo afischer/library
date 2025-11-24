@@ -18,11 +18,6 @@
 	</span>
 {/if}
 
-<!-- <pre>
-  {JSON.stringify(paragraph, null, 2)}
-  -------
-</pre> -->
-
 <style>
 	.bold {
 		font-weight: 800;
@@ -32,5 +27,8 @@
 	}
 	.underline {
 		text-decoration: underline;
+	}
+	.strikethrough {
+		text-decoration: line-through;
 	}
 </style>

@@ -17,7 +17,7 @@
 				<LogoLockup />
 			</li>
 			{#each breadcrumbs as breadcrumb, i}
-				<li>
+				<li class="breadcrumb-item">
 					<!-- Todo: fix this -->
 					<a rel="external" href={breadcrumb.path}>{breadcrumb.cleanName}</a>
 				</li>
@@ -34,11 +34,17 @@
 		text-decoration: none;
 		font-size: 15px;
 		color: var(--color-secondary-contrast);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 280px;
+		display: block;
 	}
 
 	.breadcrumbs {
 		flex: 1;
 		color: var(--color-secondary-contrast);
+		overflow: hidden;
 	}
 
 	.breadcrumbs ol {
@@ -47,17 +53,28 @@
 		padding: 0;
 		display: flex;
 		align-items: center;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
+		overflow: hidden;
 	}
 
 	.breadcrumbs li {
 		display: flex;
 		align-items: center;
+		flex-shrink: 1;
+		min-width: 0;
 	}
 
 	.breadcrumbs li:not(:last-child)::after {
 		content: '→';
 		margin-left: 0.5rem;
 		color: rgba(255, 255, 255, 0.5);
+		flex-shrink: 0;
+	}
+
+	@media (max-width: 600px) {
+		/* truncate down to logo, last item when small */
+		.breadcrumbs li:not(:last-of-type):not(:first-of-type) {
+			display: none;
+		}
 	}
 </style>

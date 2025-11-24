@@ -82,23 +82,7 @@
 	</p>
 {/if}
 
-<!-- <pre>
-  {JSON.stringify(paragraph, null, 2)}
-  -------
-</pre> -->
-
 <style>
-	/* .bold {
-		font-weight: 800;
-	}
-	.italic {
-		font-style: italic;
-	}
-	.underline {
-		text-decoration: underline;
-	} */
-
-	h1,
 	h2,
 	h3,
 	h4,

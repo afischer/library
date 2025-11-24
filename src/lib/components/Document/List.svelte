@@ -81,9 +81,7 @@
 		const glyphType = nestStyle?.glyphType;
 		const glyphSymbol = nestStyle?.glyphSymbol;
 
-		if (glyphSymbol) {
-			return `'${glyphSymbol} '`;
-		}
+		if (glyphSymbol) return `'${glyphSymbol} '`;
 
 		switch (glyphType) {
 			case 'DECIMAL':
@@ -99,11 +97,15 @@
 			case 'ROMAN':
 				return 'lower-roman';
 			case 'GLYPH_BULLET':
+				return 'bullet';
 			case 'HOLLOW_BULLET':
+				return 'circle';
 			case 'SQUARE_BULLET':
-				return 'disc';
+				return 'square';
+			case 'GLYPH_TYPE_UNSPECIFIED':
+				return `' '`;
 			default:
-				return 'disc';
+				return 'none';
 		}
 	}
 

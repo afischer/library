@@ -8,6 +8,7 @@ import { getOrdering } from './metadata';
 import { getTags } from './metadata';
 import slugify from 'slugify';
 import { getCleanName } from './metadata';
+import { GOOGLE_APPLICATION_JSON, GOOGLE_DRIVE_ID } from '$env/static/private';
 
 export async function getAuthClient(): Promise<JWT> {
 	const scopes = [
@@ -16,7 +17,7 @@ export async function getAuthClient(): Promise<JWT> {
 		'https://www.googleapis.com/auth/datastore'
 	];
 	console.info('Trying to parse client credentials via GOOGLE_APPLICATION_JSON.');
-	const jsonCredentials = JSON.parse(import.meta.env.VITE_GOOGLE_APPLICATION_JSON);
+	const jsonCredentials = JSON.parse(GOOGLE_APPLICATION_JSON);
 	const auth = new google.auth.GoogleAuth({
 		credentials: jsonCredentials,
 		scopes: scopes
@@ -66,7 +67,7 @@ async function listAllFiles(): Promise<drive_v3.Schema$File[]> {
 			corpora: 'drive',
 			includeItemsFromAllDrives: true,
 			supportsAllDrives: true,
-			driveId: import.meta.env.VITE_GOOGLE_DRIVE_ID,
+			driveId: GOOGLE_DRIVE_ID,
 			auth: authClient,
 			pageSize: 1000,
 			pageToken: nextPageToken as string | undefined,
@@ -75,8 +76,6 @@ async function listAllFiles(): Promise<drive_v3.Schema$File[]> {
 		allFiles.push(...(res.data.files ?? []));
 		console.log(`Fetched ${allFiles.length} files...`);
 		nextPageToken = res.data.nextPageToken;
-		// TEMPORARY
-		// nextPageToken = undefined;
 	}
 
 	// sort by title, then all folders to the top
@@ -141,8 +140,7 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode> {
 	const rootFiles = folderId
 		? allFiles.filter((file) => !file.parents?.length || file.parents[0] === folderId)
 		: allFiles.filter(
-				(file) =>
-					file.parents?.length === 0 || file?.parents?.[0] === import.meta.env.VITE_GOOGLE_DRIVE_ID
+				(file) => file.parents?.length === 0 || file?.parents?.[0] === GOOGLE_DRIVE_ID
 			);
 
 	// Create a map of parent ID to children
@@ -211,17 +209,16 @@ export async function getFileTree(folderId?: string): Promise<FileTreeNode> {
 
 export async function getNodeFromSlug(slug: string): Promise<FileTreeNode | undefined> {
 	const tree = await getFileTree();
-
+	console.log('tree', tree);
 	// split the path into parts
 	const parts = slug.split('/');
 
 	// move through the tree, looking for the node that matches the slug
 	let currentNode = tree.children[parts[0]];
 	parts.shift(); // remove the first part
-	console.log('at', currentNode?.cleanName);
+
 	for (const part of parts) {
 		currentNode = currentNode?.children[part];
-		console.log('> at', currentNode?.cleanName, 'for', part);
 	}
 	return currentNode;
 }
@@ -232,7 +229,7 @@ export async function getBreadcrumbs(slug: string): Promise<Breadcrumb[]> {
 	let currentPath = '';
 	for (const part of parts) {
 		currentPath += `${part}`;
-		console.log('currentPath', currentPath);
+
 		const node = await getNodeFromSlug(currentPath);
 		if (node) {
 			breadcrumbs.push({

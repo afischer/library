@@ -3,6 +3,7 @@ import { google } from 'googleapis';
 import type { drive_v3 } from 'googleapis';
 import { getAuthClient } from './drive';
 import type { GaxiosResponse } from 'gaxios';
+import { GOOGLE_DRIVE_ID } from '$env/static/private';
 
 // TODO: folder support
 export async function search(query: string): Promise<drive_v3.Schema$File[]> {
@@ -19,7 +20,7 @@ export async function search(query: string): Promise<drive_v3.Schema$File[]> {
 			corpora: 'drive',
 			includeItemsFromAllDrives: true,
 			supportsAllDrives: true,
-			driveId: import.meta.env.VITE_GOOGLE_DRIVE_ID,
+			driveId: GOOGLE_DRIVE_ID,
 			auth: authClient,
 			pageSize: 1000,
 			pageToken: nextPageToken as string | undefined,

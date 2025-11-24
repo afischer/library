@@ -3,6 +3,7 @@
 
 	import Category from '$lib/components/Category.svelte';
 	import Box from '$lib/components/Box.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 
 	interface Props {
 		data: { tree: FileTreeNode };
@@ -11,8 +12,9 @@
 	let { data }: Props = $props();
 </script>
 
-<h1>Categories</h1>
-
+<section>
+	<SearchBar typeaheadValues={[]} />
+</section>
 <section>
 	{#each Object.values(data.tree.children) as node}
 		<Box maxHeight={650}>

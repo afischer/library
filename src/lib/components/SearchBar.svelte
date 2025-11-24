@@ -14,10 +14,11 @@
 	let searchText: string = $state('');
 	let selectedIndex: number = $state(-1);
 
-	let filteredResults =
-		$derived(typeaheadValues
+	let filteredResults = $derived(
+		typeaheadValues
 			?.filter((title) => searchText && title.toLowerCase().includes(searchText.toLowerCase()))
-			?.slice(0, MAX_TYPEAHEAD_ITEMS) ?? []);
+			?.slice(0, MAX_TYPEAHEAD_ITEMS) ?? []
+	);
 
 	run(() => {
 		if (searchText) {

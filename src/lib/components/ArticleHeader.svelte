@@ -62,7 +62,7 @@
 			{/if}
 		</p>
 		<!-- Folders will not have revisions; use the info in the folder response itself -->
-	{:else if node.file.createdTime && node.file.modifiedTime && node.file?.lastModifyingUser}
+	{:else if node?.file?.createdTime && node?.file?.modifiedTime && node?.file?.lastModifyingUser}
 		<p>
 			Last edited by <span class="name">{node.file.lastModifyingUser.displayName}</span>
 			{relativeTime(node.file.modifiedTime)}.

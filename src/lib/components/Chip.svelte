@@ -19,18 +19,22 @@
 
 <style>
 	.chip {
-		display: inline-flex;
+		/* display: inline-flex; */
 		align-items: center;
 		justify-content: center;
-		padding: 5px 10px;
-		background-color: var(--color-secondary);
-		color: var(--color-secondary-contrast);
+		padding: 0.25rem 0.5rem;
+		background-color: var(--color-secondary-contrast);
+		color: var(--color-secondary);
 		text-decoration: none;
+		border-radius: 3px;
+		transition: background-color 0.3s;
+		white-space: nowrap;
 	}
 
 	a.chip:hover {
 		cursor: pointer;
-		color: var(--color-primary);
+		background-color: var(--color-primary);
+		color: var(--color-secondary-contrast-light);
 		text-decoration: none;
 	}
 </style>

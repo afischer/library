@@ -31,7 +31,7 @@
 <header>
 	<SearchBar typeaheadValues={data.titles} />
 	<ArticleHeader
-		node={data.tree.home ?? data.tree}
+		node={data?.tree?.home ?? data.tree}
 		revision={data.revision}
 		firstElement={firstParagraph}
 	/>
@@ -50,7 +50,7 @@
 {/if}
 
 <aside class="footer">
-	{#if Object.values(data?.tree?.children).length}
+	{#if Object.values(data?.tree?.children ?? {}).length}
 		<Box>
 			<h3>Pages in {data.tree.cleanName}</h3>
 			<Category node={data.tree} parentPath={page.url.pathname} />
@@ -84,10 +84,6 @@
 	header {
 		max-width: 600px;
 		margin: 0 auto;
-	}
-
-	header {
-		padding-top: 5rem;
 	}
 
 	h3 {
