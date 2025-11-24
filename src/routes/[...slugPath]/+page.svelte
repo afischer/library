@@ -10,15 +10,19 @@
 	import ArticleHeader from '$lib/components/ArticleHeader.svelte';
 	import TableOfContents from '$lib/components/TableOfContents.svelte';
 	import Button from '$lib/components/Button.svelte';
-	export let data: {
-		doc: docs_v1.Schema$Document | undefined;
-		headings: Heading[] | undefined;
-		revision: drive_v3.Schema$Revision;
-		tree: FileTreeNode;
-		titles: string[];
-	};
+	interface Props {
+		data: {
+			doc: docs_v1.Schema$Document | undefined;
+			headings: Heading[] | undefined;
+			revision: drive_v3.Schema$Revision;
+			tree: FileTreeNode;
+			titles: string[];
+		};
+	}
 
-	export const hydrate = false;
+	let { data }: Props = $props();
+
+	// export const hydrate = false;
 
 	const firstParagraph = data.doc?.body?.content?.find((element) => !!element.paragraph);
 </script>
@@ -27,7 +31,7 @@
 	<SearchBar typeaheadValues={data.titles} />
 	<ArticleHeader
 		node={data.tree.home ?? data.tree}
-		revision={data.tree.home?.revision ?? data.revision}
+		revision={data.revision}
 		firstElement={firstParagraph}
 	/>
 </header>

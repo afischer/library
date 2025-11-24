@@ -1,10 +1,15 @@
 <script lang="ts">
+	import List from './List.svelte';
 	import type { docs_v1 } from 'googleapis';
 	import TextRun from './TextRun.svelte';
 
-	export let items: docs_v1.Schema$StructuralElement[];
-	export let listProperties: Record<string, docs_v1.Schema$List> | undefined;
-	export let inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
+	interface Props {
+		items: docs_v1.Schema$StructuralElement[];
+		listProperties: Record<string, docs_v1.Schema$List> | undefined;
+		inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
+	}
+
+	let { items, listProperties, inlineObjects }: Props = $props();
 
 	interface ListItem {
 		structuralElement: docs_v1.Schema$StructuralElement;
@@ -115,7 +120,7 @@
 		return { items, listType, listStyleType };
 	}
 
-	$: list = renderList(listStructure);
+	let list = $derived(renderList(listStructure));
 </script>
 
 {#if list.listType === 'ul'}
@@ -128,7 +133,7 @@
 					{/if}
 				{/each}
 				{#if item.children.length > 0}
-					<svelte:self
+					<List
 						items={item.children.map((c: ListItem) => c.structuralElement)}
 						{listProperties}
 						{inlineObjects}
@@ -147,7 +152,7 @@
 					{/if}
 				{/each}
 				{#if item.children.length > 0}
-					<svelte:self
+					<List
 						items={item.children.map((c: ListItem) => c.structuralElement)}
 						{listProperties}
 						{inlineObjects}

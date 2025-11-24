@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { docs_v1 } from 'googleapis';
 
-	export let textRun: docs_v1.Schema$TextRun;
+	interface Props {
+		textRun: docs_v1.Schema$TextRun;
+	}
+
+	let { textRun }: Props = $props();
 </script>
 
 {#if textRun?.textStyle?.link}

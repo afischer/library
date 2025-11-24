@@ -2,11 +2,14 @@
 	import type { Breadcrumb } from '$lib/types';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
-	export let data: {
-		breadcrumbs: Breadcrumb[];
-	};
+	interface Props {
+		data: {
+			breadcrumbs: Breadcrumb[];
+		};
+		children: any;
+	}
 
-	export let children;
+	let { data, children }: Props = $props();
 </script>
 
 <header>

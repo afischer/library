@@ -3,10 +3,14 @@
 	import TextRun from './TextRun.svelte';
 	import InlineObject from './InlineObject.svelte';
 
-	export let paragraph: docs_v1.Schema$Paragraph;
-	export let inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
-	export let listProperties: Record<string, docs_v1.Schema$List> | undefined;
-	// if (paragraph.bullet) {
+	interface Props {
+		paragraph: docs_v1.Schema$Paragraph;
+		inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
+		listProperties: Record<string, docs_v1.Schema$List> | undefined; // if (paragraph.bullet) {
+	}
+
+	let { paragraph, inlineObjects, listProperties }: Props = $props();
+
 	// 	console.log(JSON.stringify(paragraph, null, 2));
 	// }
 	// const list = listProperties[paragraph.paragraphStyle.namedStyleType];
@@ -57,18 +61,22 @@
 {:else if paragraph.bullet && listProperties}
 	<!-- List items are now handled by the List component -->
 {:else}
-	<p>
-		{#each paragraph.elements ?? [] as element}
-			{#if element.textRun}
+	{#each paragraph.elements ?? [] as element}
+		{#if element.textRun}
+			<p>
 				<TextRun textRun={element?.textRun} />
-			{:else if element.inlineObjectElement && element.inlineObjectElement.inlineObjectId}
-				<!-- TODO: this is broken when there are images in tables. -->
-				<InlineObject inlineObject={inlineObjects[element.inlineObjectElement.inlineObjectId]} />
-			{:else}
-				unknown {element}
-			{/if}
-		{/each}
-	</p>
+			</p>
+		{:else if element.inlineObjectElement && element.inlineObjectElement.inlineObjectId}
+			<!-- TODO: this is broken when there are images in tables. -->
+			<InlineObject inlineObject={inlineObjects[element.inlineObjectElement.inlineObjectId]} />
+		{:else if element?.horizontalRule}
+			<hr />
+		{:else}
+			<span class="library-error">
+				LIBRARY ERROR: Unknown element type <pre>{JSON.stringify(element, null, 2)}</pre>
+			</span>
+		{/if}
+	{/each}
 {/if}
 
 <!-- <pre>

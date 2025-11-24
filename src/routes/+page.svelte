@@ -5,10 +5,14 @@
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { FileTree, FileTreeNode } from '$lib/types';
 
-	export let data: {
-		tree: FileTree;
-		titles: string[];
-	};
+	interface Props {
+		data: {
+			tree: FileTree;
+			titles: string[];
+		};
+	}
+
+	let { data }: Props = $props();
 
 	const getFeaturedNodes = (tree: FileTree): { url: string; name: string }[] => {
 		const featuredNodes: { url: string; name: string }[] = [];

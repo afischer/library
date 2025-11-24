@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { Heading } from '$lib/types';
 
-	export let headings: Heading[];
+	interface Props {
+		headings: Heading[];
+	}
+
+	let { headings }: Props = $props();
 
 	const nestedHeadings = headings.reduce(
 		(acc, heading) => {

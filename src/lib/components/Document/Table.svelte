@@ -2,9 +2,13 @@
 	import type { docs_v1 } from 'googleapis';
 	import StructuralElement from './StructuralElement.svelte';
 
-	export let table: docs_v1.Schema$Table;
-	export let inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
-	export let listProperties: Record<string, docs_v1.Schema$List> | undefined;
+	interface Props {
+		table: docs_v1.Schema$Table;
+		inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
+		listProperties: Record<string, docs_v1.Schema$List> | undefined;
+	}
+
+	let { table, inlineObjects, listProperties }: Props = $props();
 </script>
 
 <table>

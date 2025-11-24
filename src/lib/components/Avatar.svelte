@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { drive_v3 } from 'googleapis';
 
-	export let user: drive_v3.Schema$User;
+	interface Props {
+		user: drive_v3.Schema$User;
+	}
+
+	let { user }: Props = $props();
 
 	const initials = user?.displayName
 		?.split(' ')

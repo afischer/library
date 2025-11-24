@@ -4,7 +4,11 @@
 	import Category from '$lib/components/Category.svelte';
 	import Box from '$lib/components/Box.svelte';
 
-	export let data: { tree: FileTreeNode };
+	interface Props {
+		data: { tree: FileTreeNode };
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <h1>Categories</h1>

@@ -3,7 +3,11 @@
 	import StructuralElement from './StructuralElement.svelte';
 	import List from './List.svelte';
 
-	export let document: docs_v1.Schema$Document;
+	interface Props {
+		document: docs_v1.Schema$Document;
+	}
+
+	let { document }: Props = $props();
 
 	// Group consecutive list items together
 	function groupContent(content: docs_v1.Schema$StructuralElement[]) {
@@ -38,7 +42,7 @@
 		return grouped;
 	}
 
-	$: groupedContent = groupContent(document.body?.content ?? []);
+	let groupedContent = $derived(groupContent(document.body?.content ?? []));
 </script>
 
 {#each groupedContent as group}

@@ -1,21 +1,29 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
 	import { goto } from '$app/navigation';
 
 	const MAX_TYPEAHEAD_ITEMS = 10;
 
-	export let typeaheadValues: string[];
-	let searchText: string = '';
-	let selectedIndex: number = -1;
-
-	$: filteredResults =
-		typeaheadValues
-			?.filter((title) => searchText && title.toLowerCase().includes(searchText.toLowerCase()))
-			?.slice(0, MAX_TYPEAHEAD_ITEMS) ?? [];
-
-	$: if (searchText) {
-		selectedIndex = -1;
+	interface Props {
+		typeaheadValues: string[];
 	}
+
+	let { typeaheadValues }: Props = $props();
+	let searchText: string = $state('');
+	let selectedIndex: number = $state(-1);
+
+	let filteredResults =
+		$derived(typeaheadValues
+			?.filter((title) => searchText && title.toLowerCase().includes(searchText.toLowerCase()))
+			?.slice(0, MAX_TYPEAHEAD_ITEMS) ?? []);
+
+	run(() => {
+		if (searchText) {
+			selectedIndex = -1;
+		}
+	});
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (filteredResults.length === 0) return;
@@ -56,7 +64,7 @@
 			name="q"
 			placeholder="What are you looking for?"
 			bind:value={searchText}
-			on:keydown={handleKeydown}
+			onkeydown={handleKeydown}
 		/>
 		<button type="submit">
 			<SearchIcon size={16} />
@@ -68,7 +76,7 @@
 					<a
 						href={`/search?q=${title}`}
 						class:selected={index === selectedIndex}
-						on:click={() => handleItemClick(title)}
+						onclick={() => handleItemClick(title)}
 					>
 						{title}
 					</a>

@@ -124,3 +124,15 @@ input[type="text"] + button {
 input[type="text"]::placeholder {
   color: #aaa;
 }
+
+.library-error {
+  display: block;
+  color: red;
+  font-size: 12px;
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-sans);
+  background-color: var(--color-primary-light);
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--color-primary);
+}

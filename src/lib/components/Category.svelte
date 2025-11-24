@@ -2,9 +2,13 @@
 	import Category from '$lib/components/Category.svelte';
 	import type { FileTreeNode } from '$lib/types';
 
-	export let node: FileTreeNode;
-	export let depth: number = 0;
-	export let parentPath: string = '';
+	interface Props {
+		node: FileTreeNode;
+		depth?: number;
+		parentPath?: string;
+	}
+
+	let { node, depth = 0, parentPath = '' }: Props = $props();
 
 	const hasChildren = Object.values(node.children).length > 0;
 	const sortedChildren = Object.values(node.children).sort(

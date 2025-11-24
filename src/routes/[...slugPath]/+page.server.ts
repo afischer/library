@@ -3,7 +3,7 @@ import type { ServerLoad } from '@sveltejs/kit';
 
 export const ssr = true;
 export const csr = true;
-export const prerender = true;
+export const prerender = false;
 
 // todo: routematcher for 404
 export const load: ServerLoad = async ({ locals }) => {
@@ -13,7 +13,7 @@ export const load: ServerLoad = async ({ locals }) => {
 			status: 404
 		};
 	}
-
+	console.log('>>>>>>> running page server load');
 	// todo: ensure file being fetched is of a supported type (i.e., not a folder or slide deck)
 	// todo: parallelize these requests
 
@@ -23,6 +23,7 @@ export const load: ServerLoad = async ({ locals }) => {
 	const fileId = locals.tree.home?.file.id ?? locals.tree.file.id;
 	const { data: doc } = isFolderOnly ? { data: undefined } : await getFile(fileId);
 	const { data: revision } = isFolderOnly ? { data: undefined } : await getFirstRevision(fileId);
+
 	return {
 		doc,
 		headings: getHeadings(doc?.body?.content ?? []),

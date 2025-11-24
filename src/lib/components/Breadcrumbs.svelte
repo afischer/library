@@ -3,7 +3,11 @@
 	import type { Breadcrumb } from '$lib/types';
 	import LogoLockup from '$lib/components/LogoLockup.svelte';
 
-	export let breadcrumbs: Breadcrumb[];
+	interface Props {
+		breadcrumbs: Breadcrumb[];
+	}
+
+	let { breadcrumbs }: Props = $props();
 </script>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -14,7 +18,8 @@
 			</li>
 			{#each breadcrumbs as breadcrumb, i}
 				<li>
-					<a href={breadcrumb.path}>{breadcrumb.cleanName}</a>
+					<!-- Todo: fix this -->
+					<a rel="external" href={breadcrumb.path}>{breadcrumb.cleanName}</a>
 				</li>
 			{/each}
 		</ol>

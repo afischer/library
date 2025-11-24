@@ -1,6 +1,11 @@
 <script lang="ts">
-	export let maxHeight: number | undefined = undefined;
-	export let className: string | undefined = undefined;
+	interface Props {
+		maxHeight?: number | undefined;
+		className?: string | undefined;
+		children?: import('svelte').Snippet;
+	}
+
+	let { maxHeight = undefined, className = undefined, children }: Props = $props();
 </script>
 
 <div
@@ -8,7 +13,7 @@
 	style:overflow-y={maxHeight ? 'scroll' : undefined}
 	style:max-height="{maxHeight}px"
 >
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>

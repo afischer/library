@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
 	import BookIcon from './icons/BookIcon.svelte';
 
-	export let size = 24;
+	interface Props {
+		size?: number;
+	}
+
+	let { size = 24 }: Props = $props();
 </script>
 
 <h1>

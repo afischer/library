@@ -16,15 +16,15 @@ export function getTags(filename: string): Tag[] {
 	return (tags as Tag[]) ?? [];
 }
 
-const orderingRegex: RegExp = /^\s+?([0-9]+)\s+?[-.)]\s+?/g;
+const orderingRegex: RegExp = /^\s*([0-9]+)\s*[-.)\]]\s*/;
 
 /**
- * You can place a number at the begining of your filename to order it, followed
- * by a dash, period, or close paren.
+ * You can place a number at the beginning of your filename to order it, followed
+ * by a dash, period, close paren, or bracket.
  */
 export function getOrdering(filename: string): number | null {
-	const ordering = filename.match(orderingRegex);
-	return ordering ? parseInt(ordering[0].replace(/[--—.)]/g, '')) : null;
+	const match = filename.match(orderingRegex);
+	return match ? parseInt(match[1]) : null;
 }
 
 /**

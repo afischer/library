@@ -2,9 +2,13 @@
 	import type { FileTreeNode } from '$lib/types';
 	import type { docs_v1, drive_v3 } from 'googleapis';
 
-	export let node: FileTreeNode;
-	export let revision: drive_v3.Schema$Revision;
-	export let firstElement: docs_v1.Schema$StructuralElement | undefined;
+	interface Props {
+		node: FileTreeNode;
+		revision: drive_v3.Schema$Revision;
+		firstElement: docs_v1.Schema$StructuralElement | undefined;
+	}
+
+	let { node, revision, firstElement }: Props = $props();
 
 	const bylineOverride = firstElement?.paragraph?.elements?.[0]?.textRun?.content?.startsWith('By')
 		? firstElement.paragraph.elements[0].textRun.content.replace('By ', '')

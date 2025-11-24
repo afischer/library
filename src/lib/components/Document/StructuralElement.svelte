@@ -3,9 +3,13 @@
 	import Paragraph from './Paragraph.svelte';
 	import Table from './Table.svelte';
 
-	export let structuralElement: docs_v1.Schema$StructuralElement;
-	export let inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
-	export let listProperties: Record<string, docs_v1.Schema$List> | undefined;
+	interface Props {
+		structuralElement: docs_v1.Schema$StructuralElement;
+		inlineObjects: Record<string, docs_v1.Schema$InlineObject>;
+		listProperties: Record<string, docs_v1.Schema$List> | undefined;
+	}
+
+	let { structuralElement, inlineObjects, listProperties }: Props = $props();
 </script>
 
 {#if structuralElement.paragraph}
